@@ -1,135 +1,355 @@
-@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 html, body {
     height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(40, 220, 160, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0, 150, 255, 0.08) 0%, transparent 50%),
+        linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0d0d0d 100%);
 }
 
 body {
     display: grid;
     place-items: center;
-    background: #dde1e7;
     text-align: center;
+    padding: 20px;
 }
 
 .reg-form-container {
-    width: 330px;
-    padding: 40px 30px;
-    background: #dde1e7;
-    border-radius: 10px;
-    box-shadow: -3px -3px 7px #ffffff73,
-                2px 2px 5px rgba(94,104,121,0.288);
+    width: 100%;
+    max-width: 420px;
+    padding: 50px 40px;
+    background: 
+        linear-gradient(145deg, rgba(25, 25, 25, 0.95) 0%, rgba(15, 15, 15, 0.98) 100%);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        0 15px 35px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.reg-form-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(0, 255, 200, 0.4), 
+        rgba(0, 150, 255, 0.4), 
+        transparent
+    );
+    animation: scanline 3s linear infinite;
 }
 
 .reg-form-text {
-    font-size: 33px;
-    font-weight: 600;
-    margin-bottom: 35px;
-    color: #595959;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, #00ffc8 0%, #0096ff 50%, #00ffc8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% auto;
+    animation: shimmer 3s ease-in-out infinite;
+    position: relative;
+    letter-spacing: -0.5px;
+    text-shadow: 0 0 30px rgba(0, 255, 200, 0.3);
+}
+
+.reg-form-text::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00ffc8, #0096ff, transparent);
+    border-radius: 1px;
 }
 
 .reg-form-field {
-    height: 50px;
+    height: 60px;
     width: 100%;
     display: flex;
     position: relative;
-    margin-top: 20px;
+    margin-top: 25px;
+    transition: all 0.3s ease;
+}
+
+.reg-form-field:hover {
+    transform: translateX(8px);
 }
 
 .reg-form-field input {
     height: 100%;
     width: 100%;
-    padding-left: 45px;
+    padding-left: 55px;
+    padding-right: 20px;
     outline: none;
     border: none;
-    font-size: 18px;
-    background: #dde1e7;
-    color: #595959;
-    border-radius: 25px;
-    box-shadow: inset 2px 2px 5px #BABECC,
-                inset -5px -5px 10px #ffffff73;
+    font-size: 16px;
+    background: rgba(10, 10, 10, 0.8);
+    color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.5),
+        0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    z-index: 2;
+    position: relative;
+}
+
+/* FIX: Style untuk autofill browser */
+.reg-form-field input:-webkit-autofill,
+.reg-form-field input:-webkit-autofill:hover,
+.reg-form-field input:-webkit-autofill:focus,
+.reg-form-field input:-webkit-autofill:active {
+    -webkit-text-fill-color: #ffffff !important;
+    -webkit-box-shadow: 
+        0 0 0px 1000px rgba(10, 10, 10, 0.9) inset,
+        inset 0 2px 4px rgba(0, 0, 0, 0.5),
+        0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    background: rgba(10, 10, 10, 0.9) !important;
+    border: 1px solid rgba(0, 255, 200, 0.4) !important;
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 .reg-form-field input:focus {
-    box-shadow: inset 1px 1px 2px #BABECC,
-                inset -1px -1px 2px #ffffff73;
+    background: rgba(15, 15, 15, 0.9);
+    border-color: rgba(0, 255, 200, 0.4);
+    box-shadow: 
+        inset 0 2px 8px rgba(0, 0, 0, 0.6),
+        0 0 0 3px rgba(0, 255, 200, 0.1),
+        0 8px 20px rgba(0, 255, 200, 0.2);
+    transform: scale(1.02);
 }
 
-.reg-form-field span {
+/* FIX: Style autofill saat focus */
+.reg-form-field input:focus:-webkit-autofill {
+    -webkit-box-shadow: 
+        0 0 0px 1000px rgba(15, 15, 15, 0.9) inset,
+        inset 0 2px 8px rgba(0, 0, 0, 0.6),
+        0 0 0 3px rgba(0, 255, 200, 0.1),
+        0 8px 20px rgba(0, 255, 200, 0.2) !important;
+    background: rgba(15, 15, 15, 0.9) !important;
+}
+
+.reg-form-field .icon {
     position: absolute;
-    color: #595959;
-    width: 50px;
-    line-height: 50px;
+    color: #666;
+    width: 55px;
+    line-height: 60px;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    z-index: 3;
+    pointer-events: none;
 }
 
-.reg-form-field label {
+.reg-form-field input:focus + .icon {
+    color: #00ffc8;
+    transform: scale(1.1);
+    text-shadow: 0 0 10px rgba(0, 255, 200, 0.5);
+}
+
+.reg-form-field .label {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: 45px;
+    left: 55px;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background: rgba(10, 10, 10, 0.9);
+    padding: 0 8px;
+    border-radius: 6px;
     pointer-events: none;
-    color: #666666;
+    z-index: 1;
 }
 
-.reg-form-field input:valid ~ label {
-    opacity: 0;
+.reg-form-field input:focus ~ .label,
+.reg-form-field input:not(:placeholder-shown) ~ .label {
+    top: 0;
+    font-size: 12px;
+    color: #00ffc8;
+    background: rgba(15, 15, 15, 0.9);
+    transform: translateY(-50%) scale(0.9);
+    text-shadow: 0 0 8px rgba(0, 255, 200, 0.3);
+}
+
+/* FIX: Label untuk input yang terisi otomatis */
+.reg-form-field input:-webkit-autofill ~ .label {
+    top: 0;
+    font-size: 12px;
+    color: #00ffc8;
+    background: rgba(15, 15, 15, 0.9);
+    transform: translateY(-50%) scale(0.9);
+    text-shadow: 0 0 8px rgba(0, 255, 200, 0.3);
 }
 
 .reg-form-forgot-pass {
     text-align: left;
-    margin: 10px 0 10px 5px;
+    margin: 20px 0 25px 5px;
 }
 
 .reg-form-forgot-pass a {
-    font-size: 16px;
-    color: #3498db;
+    font-size: 14px;
+    color: #666;
     text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 5px 0;
+}
+
+.reg-form-forgot-pass a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, #00ffc8, #0096ff);
+    transition: width 0.3s ease;
 }
 
 .reg-form-forgot-pass a:hover {
-    text-decoration: underline;
+    color: #00ffc8;
+    text-shadow: 0 0 8px rgba(0, 255, 200, 0.3);
+}
+
+.reg-form-forgot-pass a:hover::after {
+    width: 100%;
 }
 
 button {
-    margin: 15px 0;
+    margin: 25px 0;
     width: 100%;
-    height: 50px;
-    font-size: 18px;
-    line-height: 50px;
+    height: 55px;
+    font-size: 16px;
     font-weight: 600;
-    background: #dde1e7;
-    border-radius: 25px;
+    background: linear-gradient(135deg, #00a386 0%, #0072ff 50%, #00a386 100%);
+    background-size: 200% auto;
+    border-radius: 12px;
     border: none;
     outline: none;
     cursor: pointer;
-    color: #595959;
-    box-shadow: 2px 2px 5px #BABECC,
-                -5px -5px 10px #ffffff73;
+    color: #0a0a0a;
+    box-shadow: 
+        0 10px 25px rgba(0, 255, 200, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-button:focus {
-    color: #3498db;
-    box-shadow: inset 2px 2px 5px #BABECC,
-                inset -5px -5px 10px #ffffff73;
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 15px 35px rgba(0, 255, 200, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    background-position: right center;
+}
+
+button:active {
+    transform: translateY(-1px);
 }
 
 .reg-form-sign-up {
-    margin: 10px 0;
-    color: #595959;
-    font-size: 16px;
+    margin: 20px 0;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .reg-form-sign-up a {
-    color: #3498db;
+    color: #00ffc8;
     text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 2px 6px;
+    border-radius: 4px;
 }
 
 .reg-form-sign-up a:hover {
-    text-decoration: underline;
+    color: #0096ff;
+    background: rgba(0, 255, 200, 0.1);
+    text-shadow: 0 0 8px rgba(0, 255, 200, 0.3);
 }
+
+/* Animations */
+@keyframes scanline {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+@keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    body {
+        padding: 15px;
+    }
+    
+    .reg-form-container {
+        padding: 40px 25px;
+        border-radius: 14px;
+    }
+    
+    .reg-form-text {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+    
+    .reg-form-field {
+        height: 55px;
+        margin-top: 20px;
+    }
+    
+    button {
+        height: 50px;
+        margin: 20px 0;
+    }
+}
+
+/* Animation for form elements */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.reg-form-field, .reg-form-forgot-pass, button, .reg-form-sign-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.reg-form-field:nth-child(1) { animation-delay: 0.1s; }
+.reg-form-field:nth-child(2) { animation-delay: 0.2s; }
+.reg-form-forgot-pass { animation-delay: 0.3s; }
+button { animation-delay: 0.4s; }
+.reg-form-sign-up { animation-delay: 0.5s; }

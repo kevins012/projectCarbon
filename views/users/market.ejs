@@ -1,86 +1,598 @@
-<div class="tw-max-w-6xl tw-mx-auto tw-p-6">
-  <h1 class="tw-text-3xl tw-font-bold tw-text-gray-800 tw-mb-4">Carbon Market</h1>
+<div class="carbon-market">
+    <!-- Eco Background -->
+    <div class="market-bg">
+        <div class="carbon-market-particles"></div>
+        <div class="emission-market-waves"></div>
+        <div class="leaf-market-pattern"></div>
+    </div>
 
-  <div class="tw-bg-white tw-shadow tw-rounded-lg tw-p-4">
-    <table class="tw-table-auto tw-w-full tw-text-left tw-border-collapse">
-      <thead>
-        <tr>
-          <th class="tw-border tw-px-4 tw-py-2 tw-font-bold">Name</th>
-          <th class="tw-border tw-px-4 tw-py-2 tw-font-bold">User Handphone Number</th>
-          <th class="tw-border tw-px-4 tw-py-2 tw-font-bold">Carbon (CO)</th>
-          <th class="tw-border tw-px-4 tw-py-2 tw-font-bold">Price</th>
-          <th class="tw-border tw-px-4 tw-py-2 tw-font-bold">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% datas.forEach((user, index) => { %>
-          <tr>
-            <td class="tw-border tw-px-4 tw-py-2"><%= user.fullName %></td>
-            <td class="tw-border tw-px-4 tw-py-2"><%= user.no_Hp %></td>
-            <td class="tw-border tw-px-4 tw-py-2"><%= user.total_co %> CO</td>
-            <td class="tw-border tw-px-4 tw-py-2" id="price-display-<%= index %>">
-              Rp. <%= (user.price || 10000).toLocaleString() %>
-            </td>
-            <td class="tw-border tw-px-4 tw-py-2">
-              <% if (user.id_user !== myuser) { %>
-                <form action="/market/buy" method="POST" class="tw-flex tw-items-center">
-                  <input type="hidden" name="myName" value="<%= myData.fullName %>">
-                  <input type="hidden" name="seller" value="<%= user.fullName %>">
-                  <input type="hidden" name="id_seller" value="<%= user.id_user %>">
-                  <input type="hidden" name="price" id="hidden-price-<%= index %>" value="<%= user.price || 10000 %>">
-                  <input type="number" 
-                         id="amount-<%= index %>" 
-                         name="amount" 
-                         class="tw-border tw-px-2 tw-py-1 tw-rounded tw-mr-2" 
-                         min="0" 
-                         max="<%= user.total_co %>" 
-                         placeholder="Amount" 
-                         required>
-                  <button type="submit" 
-                          class="tw-bg-blue-500 tw-text-white tw-px-4 tw-py-2 tw-rounded hover:tw-bg-blue-600">
-                    Buy
-                  </button>
-                </form>
-              <% } else { %> 
-                <button class="tw-bg-gray-500 tw-text-white tw-px-4 tw-py-2 tw-rounded">
-                  View
-                </button>
-              <% } %>
-            </td>
-          </tr>
-        <% }); %>
-      </tbody>
-    </table>
-  </div>
+    <div class="market-container">
+        <!-- Header -->
+        <div class="market-header">
+            <h1 class="market-title">
+                <i class="bi bi-recycle"></i>
+                Carbon Trading Hub
+            </h1>
+            <p class="market-subtitle">Trade your carbon credits in our sustainable marketplace</p>
+        </div>
+
+        <!-- Market Card -->
+        <div class="market-card">
+            <% if (datas.length > 0) { %>
+                <div class="table-container">
+                    <table class="market-table">
+                        <thead>
+                            <tr>
+                                <th class="seller-col">Penjual</th>
+                                <th class="contact-col">Kontak</th>
+                                <th class="carbon-col">Karbon (CO)</th>
+                                <th class="price-col">Harga</th>
+                                <th class="action-col">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% datas.forEach((user, index) => { %>
+                                <tr class="market-row">
+                                    <td>
+                                        <div class="seller-info">
+                                            <div class="seller-avatar">
+                                                <img src="<%= user.img ? `/img/users/${user.img}` : '/img/users/default-profile.png' %>" 
+                                                     alt="<%= user.fullName %>" class="avatar-img">
+                                            </div>
+                                            <div class="seller-details">
+                                                <div class="seller-name"><%= user.fullName %></div>
+                                                <div class="seller-shop"><%= user.shopName %></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="contact-info">
+                                            <i class="bi bi-telephone"></i>
+                                            <span class="contact-number"><%= user.no_Hp %></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="carbon-display">
+                                            <div class="carbon-badge">
+                                                <i class="bi bi-cloud-fog"></i>
+                                                <span class="carbon-amount"><%= user.total_co %> CO₂</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="price-section">
+                                            <div class="price-display" id="price-display-<%= index %>">
+                                                <span class="price-amount">Rp <%= (user.price || 10000).toLocaleString() %></span>
+                                                <span class="price-per-unit">per CO₂</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <% if (user.id_user !== myuser) { %>
+                                            <div class="transaction-interface" id="transaction-<%= index %>">
+                                                <div class="amount-controls">
+                                                    <button type="button" class="amount-btn decrease" onclick="adjustAmount(<%= index %>, -1)">
+                                                        <i class="bi bi-dash"></i>
+                                                    </button>
+                                                    <div class="amount-input-container">
+                                                        <input type="number" 
+                                                               id="amount-<%= index %>" 
+                                                               name="amount" 
+                                                               class="amount-input" 
+                                                               min="1" 
+                                                               max="<%= user.total_co %>" 
+                                                               value="1" 
+                                                               oninput="validateAmount(<%= index %>)"
+                                                               required>
+                                                        <span class="amount-unit">CO₂</span>
+                                                    </div>
+                                                    <button type="button" class="amount-btn increase" onclick="adjustAmount(<%= index %>, 1)">
+                                                        <i class="bi bi-plus"></i>
+                                                    </button>
+                                                </div>
+                                                
+                                                <form action="/market/buy" method="POST" class="buy-form" onsubmit="return handleSubmit(<%= index %>)">
+                                             
+                                                    <input type="hidden" name="seller" value="<%= user.fullName %>">
+                                                    <input type="hidden" name="id_seller" value="<%= user.id_user %>">
+                                                    <input type="hidden" name="price" id="hidden-price-<%= index %>" value="<%= user.price || 10000 %>">
+                                                    <input type="hidden" name="amount" id="form-amount-<%= index %>" value="1">
+                                                    
+                                                    <button type="submit" class="buy-btn">
+                                                        <i class="bi bi-cart-check"></i>
+                                                        <span class="btn-text">Beli Karbon</span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        <% } else { %>
+                                            <div class="own-profile">
+                                                <i class="bi bi-person-check"></i>
+                                                <span>Profil Anda</span>
+                                            </div>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } else { %>
+                <div class="market-empty">
+                    <div class="empty-icon">
+                        <i class="bi bi-wind"></i>
+                    </div>
+                    <div class="empty-title">Marketplace Kosong</div>
+                    <div class="empty-subtitle">Belum ada penjual karbon terdaftar</div>
+                </div>
+            <% } %>
+        </div>
+    </div>
 </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const datas = JSON.parse('<%- JSON.stringify(datas) %>'); 
-    datas.forEach((user, index) => {
-      const inputAmount = document.getElementById(`amount-${index}`);
-      const priceDisplay = document.getElementById(`price-display-${index}`);
-      const hiddenPriceInput = document.getElementById(`hidden-price-${index}`);
-      const pricePerUnit = parseInt(hiddenPriceInput?.value) || 10000;
+<style>
+/* Carbon Market Design System */
+.carbon-market {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0a2f0a 0%, #1a3a1a 50%, #2d4a2d 100%);
+    position: relative;
+    overflow-x: hidden;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
 
-      if (inputAmount && priceDisplay && hiddenPriceInput) {
-        // Event listener to update the price dynamically
-        inputAmount.addEventListener("input", () => {
-          const amount = parseInt(inputAmount.value) || 0;
-          const totalPrice = amount * pricePerUnit;
-      
-          // Update the displayed price
-          priceDisplay.textContent = `Rp. ${totalPrice.toLocaleString()}`;
-      
-          // Update the hidden input value for price
-          hiddenPriceInput.value = totalPrice;
-        });
-      } else {
-        console.error(
-          `Element not found for index ${index}:`,
-          { inputAmount, priceDisplay, hiddenPriceInput }
-        );
-      }
+/* Market Background Effects */
+.market-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.carbon-market-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(34, 139, 34, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(107, 142, 35, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(60, 179, 113, 0.05) 0%, transparent 50%);
+}
+
+.emission-market-waves {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200vw;
+    height: 200vh;
+    background: conic-gradient(
+        from 0deg,
+        transparent,
+        rgba(34, 139, 34, 0.08),
+        transparent,
+        rgba(107, 142, 35, 0.06),
+        transparent
+    );
+}
+
+/* Main Container */
+.market-container {
+    position: relative;
+    z-index: 2;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Market Header */
+.market-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: white;
+}
+
+.market-title {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #fff 0%, #228b22 50%, #3cb371 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+}
+
+.market-subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Market Card */
+.market-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Table */
+.table-container {
+    overflow-x: auto;
+}
+
+.market-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.market-table thead {
+    background: linear-gradient(135deg, #228b22, #3cb371);
+}
+
+.market-table th {
+    padding: 1.5rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: white;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.market-table td {
+    padding: 1.5rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* Seller Info */
+.seller-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.seller-avatar {
+    width: 50px;
+    height: 50px;
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid #228b22;
+}
+
+.seller-details {
+    flex: 1;
+}
+
+.seller-name {
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 0.25rem;
+}
+
+.seller-shop {
+    font-size: 0.8rem;
+    color: #718096;
+}
+
+/* Contact Info */
+.contact-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #4a5568;
+}
+
+.contact-info i {
+    color: #228b22;
+}
+
+/* Carbon Display */
+.carbon-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #228b22, #3cb371);
+    color: white;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Price Section */
+.price-display {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.price-amount {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #228b22;
+}
+
+.price-per-unit {
+    font-size: 0.8rem;
+    color: #718096;
+}
+
+/* Transaction Interface */
+.transaction-interface {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+.amount-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f7fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 0.5rem;
+}
+
+.amount-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: #228b22;
+    color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.amount-btn:hover {
+    background: #1f7a1f;
+}
+
+.amount-btn:disabled {
+    background: #a0aec0;
+    cursor: not-allowed;
+}
+
+.amount-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.amount-input {
+    width: 60px;
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 1rem;
+    padding: 0.25rem;
+    outline: none;
+}
+
+.amount-input::-webkit-outer-spin-button,
+.amount-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.amount-unit {
+    position: absolute;
+    right: 0.5rem;
+    font-size: 0.7rem;
+    color: #718096;
+}
+
+/* Buy Button */
+.buy-btn {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #228b22, #3cb371);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 140px;
+    justify-content: center;
+}
+
+.buy-btn:hover {
+    background: linear-gradient(135deg, #1f7a1f, #2e8b57);
+}
+
+.buy-btn:disabled {
+    background: #a0aec0;
+    cursor: not-allowed;
+}
+
+/* Own Profile */
+.own-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: #f0fff4;
+    border: 1px solid #9ae6b4;
+    border-radius: 12px;
+    color: #228b22;
+    font-weight: 500;
+}
+
+/* Empty State */
+.market-empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #718096;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.5;
+}
+
+.empty-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #4a5568;
+}
+
+.empty-subtitle {
+    margin-bottom: 2rem;
+    color: #718096;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .market-container {
+        padding: 1rem;
+    }
+    
+    .market-title {
+        font-size: 2rem;
+    }
+    
+    .transaction-interface {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+</style>
+
+<script>
+// Global variables to store product data
+const productData = [];
+
+// Initialize product data from EJS
+<% datas.forEach((user, index) => { %>
+    productData[<%= index %>] = {
+        pricePerUnit: <%= user.price || 10000 %>,
+        maxAmount: <%= user.total_co %>,
+        currentAmount: 1
+    };
+<% }); %>
+
+// Function to adjust amount
+function adjustAmount(index, change) {
+    console.log('Adjusting amount:', index, change);
+    
+    const input = document.getElementById(`amount-${index}`);
+    const currentValue = parseInt(input.value) || 1;
+    let newValue = currentValue + change;
+    
+    // Validate bounds
+    if (newValue < 1) newValue = 1;
+    if (productData[index].maxAmount > 0 && newValue > productData[index].maxAmount) {
+        newValue = productData[index].maxAmount;
+    }
+    
+    input.value = newValue;
+    productData[index].currentAmount = newValue;
+    
+    // Update hidden form amount
+    document.getElementById(`form-amount-${index}`).value = newValue;
+    
+    // Update price display
+    updatePriceDisplay(index);
+    
+    // Update button states
+    updateButtonStates(index);
+}
+
+// Function to validate amount on input
+function validateAmount(index) {
+    const input = document.getElementById(`amount-${index}`);
+    let value = parseInt(input.value) || 1;
+    
+    // Validate bounds
+    if (value < 1) value = 1;
+    if (productData[index].maxAmount > 0 && value > productData[index].maxAmount) {
+        value = productData[index].maxAmount;
+    }
+    
+    input.value = value;
+    productData[index].currentAmount = value;
+    document.getElementById(`form-amount-${index}`).value = value;
+    
+    updatePriceDisplay(index);
+    updateButtonStates(index);
+}
+
+// Function to update price display
+function updatePriceDisplay(index) {
+    const amount = productData[index].currentAmount;
+    const pricePerUnit = productData[index].pricePerUnit;
+    const totalPrice = amount * pricePerUnit;
+    
+    const priceDisplay = document.getElementById(`price-display-${index}`);
+    const hiddenPriceInput = document.getElementById(`hidden-price-${index}`);
+    
+    priceDisplay.querySelector('.price-amount').textContent = `Rp ${totalPrice.toLocaleString()}`;
+    hiddenPriceInput.value = totalPrice;
+    
+    console.log('Price updated:', totalPrice);
+}
+
+// Function to update button states
+function updateButtonStates(index) {
+    const currentAmount = productData[index].currentAmount;
+    const maxAmount = productData[index].maxAmount;
+    
+    const decreaseBtn = document.querySelector(`#transaction-${index} .decrease`);
+    const increaseBtn = document.querySelector(`#transaction-${index} .increase`);
+    
+    decreaseBtn.disabled = currentAmount <= 1;
+    increaseBtn.disabled = maxAmount > 0 && currentAmount >= maxAmount;
+}
+
+// Function to handle form submission
+function handleSubmit(index) {
+    console.log('Form submitted for index:', index);
+    
+    const amount = productData[index].currentAmount;
+    const button = document.querySelector(`#transaction-${index} .buy-btn`);
+    
+    // Basic validation
+    if (amount < 1) {
+        alert('Jumlah harus minimal 1 CO₂');
+        return false;
+    }
+    
+    // Show loading state
+    const originalText = button.innerHTML;
+    button.innerHTML = '<i class="bi bi-arrow-repeat"></i> Memproses...';
+    button.disabled = true;
+    
+    console.log('Submitting with amount:', amount);
+    
+    // Form will submit normally
+    return true;
+}
+
+// Initialize all components when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Carbon Market initialized');
+    
+    // Initialize all product displays
+    productData.forEach((product, index) => {
+        updatePriceDisplay(index);
+        updateButtonStates(index);
     });
-  });
+});
 </script>

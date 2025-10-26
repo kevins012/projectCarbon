@@ -1,25 +1,1111 @@
-<div class="tw-container tw-max-w-4xl tw-mx-auto tw-py-10">
-    <div class="tw-bg-white tw-rounded-lg tw-shadow-lg tw-p-6">
-        <div class="tw-flex tw-items-center tw-space-x-6">
-            <!-- User Image -->
-            <img src="<%= datas?.img ? `/img/users/${datas.img}` : '/default-profile.png' %>" 
-          alt="User Image" class="tw-w-24 tw-h-24 tw-rounded-full tw-object-cover tw-border-2 tw-border-gray-300">
+<div class="eco-luxury-profile">
+    <!-- Eco Background -->
+    <div class="eco-bg">
+        <div class="carbon-particles"></div>
+        <div class="emission-waves"></div>
+        <div class="leaf-pattern"></div>
+        <div class="eco-glow"></div>
+    </div>
 
-            <!-- User Info -->
-            <div class="tw-flex tw-flex-col tw-space-y-2">
-                <span class="tw-text-3xl tw-font-semibold tw-text-gray-800"><%= datas.fullName %></span>
-                <span class="tw-text-lg tw-text-gray-600">Shop Name: <strong class="tw-text-gray-800"><%= datas.shopName %></strong></span>
-                <span class="tw-text-lg tw-text-gray-600">Address: <strong class="tw-text-gray-800"><%= datas.address %></strong></span>
-                <span class="tw-text-lg tw-text-gray-600">Rating: <strong class="tw-text-gray-800">4.5</strong></span>
-                <span class="tw-text-lg tw-text-gray-600">HandPhone: <strong class="tw-text-gray-800"><%= datas.no_Hp %></strong></span>
-                <span class="tw-text-lg tw-text-gray-600">Total CO Emission: <strong class="tw-text-gray-800"><%= datas.total_co %></strong></span>
+    <!-- Main Profile Container -->
+    <div class="eco-container">
+        <!-- Carbon Frame Header -->
+        <div class="carbon-header">
+            <div class="emission-frame">
+                <div class="co2-effect"></div>
+                <div class="avatar-ecosphere">
+                    <img src="<%= datas?.img ? `/img/users/${datas.img}` : '/img/myprofile.jpg' %>" 
+                         alt="<%= datas.fullName %>" class="eco-avatar">
+                    <div class="carbon-ring"></div>
+                    <div class="eco-core"></div>
+                    <div class="sustainability-crown">
+                        <i class="bi bi-leaf"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Eco Identity -->
+            <div class="eco-identity">
+                <h1 class="eco-name">
+                    <span class="name-eco-glow"><%= datas.fullName %></span>
+                    <div class="carbon-signature"></div>
+                </h1>
+                <div class="eco-title-group">
+                    <span class="eco-badge">Carbon Conscious</span>
+                    <span class="member-id">ID: <%= datas.id_user.slice(0, 8) %>...</span>
+                </div>
+                
+                <!-- Carbon Rating System -->
+                <div class="carbon-rating">
+                    <div class="rating-ecosystem">
+                        <div class="eco-star" data-value="1">🌿</div>
+                        <div class="eco-star" data-value="2">🌿</div>
+                        <div class="eco-star" data-value="3">🌿</div>
+                        <div class="eco-star" data-value="4">🌿</div>
+                        <div class="eco-star" data-value="5">🌿</div>
+                    </div>
+                    <div class="carbon-score">
+                        <span class="score-value"><%= datas.rating || 0 %></span>
+                        <span class="score-max">/5 Eco</span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="tw-mt-6 tw-flex tw-justify-start tw-space-x-4">
-            <a href="/users/update"  class="tw-bg-blue-500 tw-text-white tw-px-6 tw-py-3 tw-rounded-md tw-font-semibold hover:tw-bg-blue-600 transition">Update Profile</a>
-            <a href="/users/update" class="tw-bg-red-500 tw-text-white tw-px-6 tw-py-3 tw-rounded-md tw-font-semibold hover:tw-bg-red-600 transition">Delete Account</a>
+        <!-- Carbon Data Grid -->
+        <div class="eco-grid">
+            <!-- Emission Matrix -->
+            <div class="emission-matrix">
+                <div class="eco-card" data-aos="carbon">
+                    <div class="card-emission"></div>
+                    <div class="eco-icon">
+                        <div class="icon-leaf">
+                            <i class="bi bi-buildings"></i>
+                        </div>
+                    </div>
+                    <div class="eco-content">
+                        <div class="eco-label">Business Enterprise</div>
+                        <div class="eco-value"><%= datas.shopName %></div>
+                        <div class="eco-sub">Sustainable Commerce</div>
+                    </div>
+                    <div class="card-vein"></div>
+                </div>
+
+                <div class="eco-card" data-aos="carbon" data-aos-delay="100">
+                    <div class="card-emission"></div>
+                    <div class="eco-icon">
+                        <div class="icon-leaf">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                    </div>
+                    <div class="eco-content">
+                        <div class="eco-label">Operational Base</div>
+                        <div class="eco-value"><%= datas.address %></div>
+                        <div class="eco-sub">Green Location</div>
+                    </div>
+                    <div class="card-vein"></div>
+                </div>
+
+                <div class="eco-card" data-aos="carbon" data-aos-delay="200">
+                    <div class="card-emission"></div>
+                    <div class="eco-icon">
+                        <div class="icon-leaf">
+                            <i class="bi bi-phone"></i>
+                        </div>
+                    </div>
+                    <div class="eco-content">
+                        <div class="eco-label">Eco Contact</div>
+                        <div class="eco-value"><%= datas.no_Hp %></div>
+                        <div class="eco-sub">Digital Communication</div>
+                    </div>
+                    <div class="card-vein"></div>
+                </div>
+
+                <div class="eco-card carbon-highlight" data-aos="carbon" data-aos-delay="300">
+                    <div class="card-emission"></div>
+                    <div class="eco-icon">
+                        <div class="icon-leaf">
+                            <i class="bi bi-cloud-fog"></i>
+                        </div>
+                    </div>
+                    <div class="eco-content">
+                        <div class="eco-label">Carbon Footprint</div>
+                        <div class="eco-value highlight"><%= datas.total_co %> kg CO₂</div>
+                        <div class="carbon-progress">
+                            <div class="progress-track">
+                                <div class="progress-emission" style="width: <%= Math.min((datas.total_co / 10000) * 100, 100) %>%"></div>
+                            </div>
+                            <span class="progress-stats">
+                                <%= Math.min((datas.total_co / 10000) * 100, 100).toFixed(1) %>% of Annual Limit
+                            </span>
+                        </div>
+                    </div>
+                    <div class="carbon-badge">
+                        <i class="bi bi-tree"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Environmental Dashboard -->
+            <div class="environment-dashboard">
+                <div class="dashboard-header">
+                    <h3>Environmental Impact</h3>
+                    <div class="eco-pulse"></div>
+                </div>
+                
+                <div class="eco-stats">
+                    <div class="stat-eco" data-aos="zoom">
+                        <div class="stat-leaf">
+                            <i class="bi bi-car-front"></i>
+                        </div>
+                        <div class="stat-data">
+                            <div class="stat-value">
+                                <%= Math.floor(datas.total_co / 100) %>
+                            </div>
+                            <div class="stat-label">Vehicle Impact</div>
+                        </div>
+                        <div class="stat-emission"></div>
+                    </div>
+
+                    <div class="stat-eco" data-aos="zoom" data-aos-delay="100">
+                        <div class="stat-leaf">
+                            <i class="bi bi-recycle"></i>
+                        </div>
+                        <div class="stat-data">
+                            <div class="stat-value">
+                                <%= 100 - Math.min((datas.total_co / 10000) * 100, 100) %>%
+                            </div>
+                            <div class="stat-label">Efficiency Score</div>
+                        </div>
+                        <div class="stat-emission"></div>
+                    </div>
+
+                    <div class="stat-eco" data-aos="zoom" data-aos-delay="200">
+                        <div class="stat-leaf">
+                            <i class="bi bi-speedometer2"></i>
+                        </div>
+                        <div class="stat-data">
+                            <div class="stat-value">
+                                <%= Math.floor((datas.rating || 0) * 20) %>%
+                            </div>
+                            <div class="stat-label">Green Performance</div>
+                        </div>
+                        <div class="stat-emission"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Eco Action Interface -->
+        <div class="eco-actions">
+            <div class="action-ecosystem">
+                <a href="/users/update" class="eco-btn primary-leaf" data-aos="fade-up">
+                    <span class="btn-eco">
+                        <i class="bi bi-pencil-square"></i>
+                        Eco Edit
+                    </span>
+                    <div class="eco-ripple"></div>
+                    <div class="btn-mist"></div>
+                </a>
+                
+                <a href="/users/delete" class="eco-btn carbon-danger" data-aos="fade-up" data-aos-delay="100">
+                    <span class="btn-eco">
+                        <i class="bi bi-trash"></i>
+                        Remove Footprint
+                    </span>
+                    <div class="eco-ripple"></div>
+                    <div class="btn-mist"></div>
+                </a>
+            </div>
+            
+            <!-- Environmental Seal -->
+            <div class="environmental-seal">
+                <div class="seal-leaf">
+                    <i class="bi bi-globe2"></i>
+                </div>
+                <span class="seal-text">Carbon Tracked</span>
+            </div>
         </div>
     </div>
 </div>
+
+<style>
+/* Eco Luxury Design System */
+.eco-luxury-profile {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0a2f0a 0%, #1a3a1a 50%, #2d4a2d 100%);
+    position: relative;
+    overflow: hidden;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Eco Background Effects */
+.eco-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.carbon-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(34, 139, 34, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(107, 142, 35, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(60, 179, 113, 0.05) 0%, transparent 50%);
+    animation: carbon-drift 25s linear infinite;
+}
+
+.emission-waves {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200vw;
+    height: 200vh;
+    background: conic-gradient(
+        from 0deg,
+        transparent,
+        rgba(34, 139, 34, 0.1),
+        transparent,
+        rgba(107, 142, 35, 0.1),
+        transparent
+    );
+    animation: emission-rotate 80s linear infinite;
+}
+
+.leaf-pattern {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(3px 3px at 20px 30px, #228b22, transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(107, 142, 35, 0.5), transparent),
+        radial-gradient(1px 1px at 90px 40px, #3cb371, transparent);
+    background-size: 150px 150px;
+    opacity: 0.3;
+    animation: leaf-float 20s linear infinite;
+}
+
+.eco-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, rgba(34, 139, 34, 0.1) 0%, transparent 70%);
+}
+
+/* Main Container */
+.eco-container {
+    position: relative;
+    z-index: 2;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+/* Carbon Header */
+.carbon-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 3rem;
+    align-items: center;
+    margin-bottom: 4rem;
+}
+
+.emission-frame {
+    position: relative;
+    width: 200px;
+    height: 200px;
+}
+
+.co2-effect {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: conic-gradient(
+        from 0deg,
+        #228b22,
+        #3cb371,
+        #2e8b57,
+        #228b22
+    );
+    border-radius: 35% 65% 65% 35% / 35% 35% 65% 65%;
+    filter: blur(10px);
+    opacity: 0.4;
+    animation: co2-rotate 10s linear infinite;
+}
+
+.avatar-ecosphere {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 35% 65% 65% 35% / 35% 35% 65% 65%;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1a3a1a, #2d4a2d);
+    border: 3px solid rgba(255, 255, 255, 0.1);
+}
+
+.eco-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+    filter: sepia(0.3) contrast(1.1);
+    transition: all 0.3s ease;
+}
+
+.eco-avatar:hover {
+    transform: scale(1.05);
+    filter: sepia(0.1) contrast(1.2);
+}
+
+.carbon-ring {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border: 2px solid transparent;
+    border-radius: inherit;
+    background: conic-gradient(
+        from 0deg,
+        transparent,
+        rgba(34, 139, 34, 0.8),
+        transparent,
+        rgba(60, 179, 113, 0.8),
+        transparent
+    );
+    animation: carbon-spin 6s linear infinite;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: subtract;
+}
+
+.eco-core {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, #228b22, transparent 70%);
+    filter: blur(8px);
+    animation: eco-pulse 3s ease-in-out infinite;
+}
+
+.sustainability-crown {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: linear-gradient(135deg, #228b22, #3cb371);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 20px rgba(34, 139, 34, 0.5);
+}
+
+/* Eco Identity */
+.eco-identity {
+    color: white;
+}
+
+.eco-name {
+    font-size: 4rem;
+    font-weight: 800;
+    margin: 0 0 1rem 0;
+    background: linear-gradient(135deg, #fff 0%, #228b22 50%, #3cb371 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    display: inline-block;
+}
+
+.name-eco-glow {
+    text-shadow: 0 0 30px rgba(34, 139, 34, 0.5);
+}
+
+.carbon-signature {
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #228b22, transparent);
+    border-radius: 2px;
+    filter: blur(2px);
+}
+
+.eco-title-group {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.eco-badge {
+    background: linear-gradient(135deg, #228b22, #3cb371);
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(34, 139, 34, 0.3);
+}
+
+.member-id {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    font-family: 'Courier New', monospace;
+}
+
+/* Carbon Rating */
+.carbon-rating {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.rating-ecosystem {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.eco-star {
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    filter: grayscale(1);
+}
+
+.eco-star:hover {
+    color: #228b22;
+    transform: scale(1.2);
+    filter: grayscale(0) drop-shadow(0 0 10px #228b22);
+}
+
+.eco-star.active {
+    color: #228b22;
+    filter: grayscale(0) drop-shadow(0 0 5px #228b22);
+}
+
+.carbon-score {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #228b22, #3cb371);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.score-max {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-left: 0.5rem;
+}
+
+/* Eco Grid */
+.eco-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+/* Emission Matrix */
+.emission-matrix {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.eco-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s ease;
+}
+
+.eco-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(34, 139, 34, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.eco-card:hover::before {
+    left: 100%;
+}
+
+.eco-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(34, 139, 34, 0.3);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.card-emission {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(34, 139, 34, 0.05) 50%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.eco-card:hover .card-emission {
+    opacity: 1;
+}
+
+.eco-icon {
+    margin-bottom: 1.5rem;
+}
+
+.icon-leaf {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #228b22, #3cb371);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    box-shadow: 0 8px 20px rgba(34, 139, 34, 0.3);
+}
+
+.eco-content {
+    color: white;
+}
+
+.eco-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 0.5rem;
+}
+
+.eco-value {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #fff, #90ee90);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.eco-sub {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.card-vein {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, transparent 50%, rgba(34, 139, 34, 0.1) 50%);
+    border-radius: 0 20px 0 50px;
+}
+
+/* Carbon Highlight */
+.carbon-highlight {
+    background: linear-gradient(135deg, rgba(34, 139, 34, 0.1), rgba(60, 179, 113, 0.05));
+    border-color: rgba(34, 139, 34, 0.3);
+}
+
+.carbon-highlight .icon-leaf {
+    background: linear-gradient(135deg, #ff6b35, #ff8e53);
+}
+
+.highlight {
+    color: #ff6b35 !important;
+    font-size: 1.6rem !important;
+}
+
+.carbon-progress {
+    margin-top: 1rem;
+}
+
+.progress-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-emission {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b35, #ff8e53);
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-emission::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: emission-shimmer 2s infinite;
+}
+
+.progress-stats {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.carbon-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: #ff6b35;
+    font-size: 1.2rem;
+}
+
+/* Environment Dashboard */
+.environment-dashboard {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: between;
+    margin-bottom: 2rem;
+}
+
+.dashboard-header h3 {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    background: linear-gradient(135deg, #fff, #90ee90);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.eco-pulse {
+    width: 8px;
+    height: 8px;
+    background: #228b22;
+    border-radius: 50%;
+    margin-left: 1rem;
+    animation: eco-pulse-dash 2s ease-in-out infinite;
+}
+
+.eco-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.stat-eco {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.stat-eco:hover {
+    transform: translateX(5px);
+    border-color: rgba(34, 139, 34, 0.3);
+}
+
+.stat-leaf {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #228b22, #3cb371);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.stat-data {
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 0.25rem;
+}
+
+.stat-emission {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(34, 139, 34, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.stat-eco:hover .stat-emission {
+    left: 100%;
+}
+
+/* Eco Actions */
+.eco-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.action-ecosystem {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.eco-btn {
+    position: relative;
+    padding: 1.2rem 2.5rem;
+    border: none;
+    border-radius: 15px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.eco-btn .btn-eco {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.primary-leaf {
+    background: linear-gradient(135deg, #228b22, #3cb371);
+    color: white;
+    box-shadow: 0 8px 25px rgba(34, 139, 34, 0.3);
+}
+
+.carbon-danger {
+    background: linear-gradient(135deg, #ff6b35, #ff8e53);
+    color: white;
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+}
+
+.eco-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    transform: scale(0);
+    animation: eco-ripple 0.6s linear;
+    pointer-events: none;
+}
+
+.btn-mist {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.eco-btn:hover .btn-mist {
+    left: 100%;
+}
+
+.eco-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+.environmental-seal {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}
+
+.seal-leaf {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #228b22, #3cb371);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+}
+
+.seal-text {
+    font-family: 'Courier New', monospace;
+}
+
+/* Animations */
+@keyframes carbon-drift {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-50px, -50px); }
+}
+
+@keyframes emission-rotate {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes leaf-float {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-100px, -100px); }
+}
+
+@keyframes co2-rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes carbon-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes eco-pulse {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+@keyframes eco-pulse-dash {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+@keyframes emission-shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+@keyframes eco-ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .eco-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .emission-matrix {
+        grid-template-columns: 1fr;
+    }
+    
+    .carbon-header {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2rem;
+    }
+    
+    .eco-name {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .eco-container {
+        padding: 2rem 1rem;
+    }
+    
+    .eco-actions {
+        flex-direction: column;
+        gap: 2rem;
+        text-align: center;
+    }
+    
+    .action-ecosystem {
+        flex-direction: column;
+    }
+    
+    .emission-frame {
+        width: 150px;
+        height: 150px;
+        margin: 0 auto;
+    }
+    
+    .eco-name {
+        font-size: 2.5rem;
+    }
+}
+
+/* Eco Entrance Animation */
+.eco-luxury-profile {
+    animation: eco-entrance 1.5s ease-out;
+}
+
+@keyframes eco-entrance {
+    from {
+        opacity: 0;
+        transform: scale(0.8) rotateX(10deg);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) rotateX(0);
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize rating stars based on data
+    const ratingValue = <%= datas.rating || 0 %>;
+    const ecoStars = document.querySelectorAll('.eco-star');
+    
+    ecoStars.forEach((star, index) => {
+        if (index < Math.floor(ratingValue)) {
+            star.classList.add('active');
+        }
+    });
+
+    // Eco Interactions
+    const ecoCards = document.querySelectorAll('.eco-card');
+    const ecoButtons = document.querySelectorAll('.eco-btn');
+    
+    // Card Emission Effect
+    ecoCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+    
+    // Eco Button Ripple
+    ecoButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            const ripple = document.createElement('div');
+            ripple.className = 'eco-ripple';
+            
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.cssText = `
+                width: ${size}px;
+                height: ${size}px;
+                left: ${x}px;
+                top: ${y}px;
+            `;
+            
+            this.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    });
+    
+    // Interactive Eco Rating
+    ecoStars.forEach(star => {
+        star.addEventListener('click', function() {
+            const value = parseInt(this.getAttribute('data-value'));
+            
+            // Update eco stars
+            ecoStars.forEach((s, index) => {
+                if (index < value) {
+                    s.classList.add('active');
+                } else {
+                    s.classList.remove('active');
+                }
+            });
+            
+            // Here you could send the eco rating to your backend
+            console.log('Eco rating:', value);
+        });
+    });
+    
+    // Carbon Particle Effect
+    function createCarbonParticle() {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(34, 139, 34, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+        `;
+        
+        const startX = Math.random() * window.innerWidth;
+        const startY = Math.random() * window.innerHeight;
+        
+        particle.style.left = startX + 'px';
+        particle.style.top = startY + 'px';
+        
+        document.querySelector('.eco-bg').appendChild(particle);
+        
+        const animation = particle.animate([
+            { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+            { transform: `translate(${Math.random() * 80 - 40}px, ${Math.random() * 80 - 40}px) scale(0)`, opacity: 0 }
+        ], {
+            duration: 3000 + Math.random() * 4000,
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+        });
+        
+        animation.onfinish = () => particle.remove();
+    }
+    
+    // Create initial carbon particles
+    for (let i = 0; i < 15; i++) {
+        setTimeout(createCarbonParticle, i * 300);
+    }
+    
+    // Continuous carbon particle generation
+    setInterval(createCarbonParticle, 800);
+});
+</script>

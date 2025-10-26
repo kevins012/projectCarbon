@@ -2,15 +2,15 @@ const mysql = require('mysql2/promise');
 
 // Membuat pool koneksi ke database
 const pool = mysql.createPool({
-  host: 'localhost',
+  host: '172.17.0.2',
   user: 'root',
   database: 'projectcarbonfix',
- 
+  password:'rootpassword',
   waitForConnections: true,
   connectionLimit: 10, // Jumlah maksimal koneksi yang dapat dibuka sekaligus
   queueLimit: 0 // Tidak ada batas untuk antrean koneksi
 });
-
+console.log(pool)
 // Fungsi yang mengembalikan sebuah Promise
 async function fetchData(query, values) {
   let connection;

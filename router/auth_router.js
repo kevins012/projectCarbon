@@ -11,18 +11,27 @@ const { v4: uuidv4 } = require('uuid'); // v4 generates a random UUID
 
 const router = express.Router();
 const jwt = require('jsonwebtoken')
-router.get('/login', (req, res) => {
+router.get('/login', async (req, res) => {  // ✅ TAMBAH async
     const authorization = req.cookies.token;
+    
     try {
         const decoded = jwt.verify(authorization, process.env.JWT_SECRET_KEY);
         req.user = decoded; 
         res.redirect('/');
     } catch (error) {
-        console.log("jjj");
-        res.render('auth/login', { title: 'Login Page', layout: 'layouts/first' });
+        try {
+            
+            // ✅ PERBAIKI TYPO: resulta -> results
+            console.log("VERIkamuuu-------------------");
+            const results = await getData('SELECT * FROM user'); // ✅ BENAR
+           
+            res.render('auth/login', { title: 'Login Page', layout: 'layouts/first' });
+        } catch (dbError) {
+            console.error('Database error:', dbError);
+            res.render('auth/login', { title: 'Login Page', layout: 'layouts/first' });
+        }
     }
 });
-
 router.get('/registration', (req, res) => {
     res.render('auth/registration', { title: 'Registration Page', layout: 'layouts/first' });
 });
@@ -35,6 +44,7 @@ router.get('/logout', (req, res) => {
 router.post('/login/user', [
     check('email').custom(async (value, { req }) => {
         const results = await getData('SELECT * FROM user');
+        console.log('haigggggggggggggggggggii')
         const pwChecks = results.filter((r) => r.email === req.body.email)
                                 .map(async (r) => getPw(req.body.password, r.password, 1));
         const pwResults = await Promise.all(pwChecks);

@@ -1,153 +1,1239 @@
-<div class="tw-px-5 tw-py-4 tw-max-w-screen-xl tw-mx-auto tw-flex tw-flex-wrap tw-gap-8">
-    <!-- Grafik pertama -->
-    <div id="myplot" class="tw-w-full tw-md:w-1/2 tw-p-4 tw-mb-8 tw-rounded-lg tw-shadow-lg tw-border">
-        <!-- Kontainer untuk grafik pertama -->
-    </div>
+<style>
+    /* Modern Color Palette */
+    :root {
+        --primary: #0ea5e9;
+        --secondary: #10b981;
+        --accent: #8b5cf6;
+        --danger: #ef4444;
+        --warning: #f59e0b;
+        --dark: #1e293b;
+        --light: #f8fafc;
+        --gray: #64748b;
+    }
+
+    /* Enhanced Animations */
+    .carbon-glow {
+        box-shadow: 0 0 30px rgba(14, 165, 233, 0.2);
+        transition: box-shadow 0.4s ease;
+    }
     
-    <!-- Grafik kedua -->
-    <div id="myplot2" class="tw-w-full tw-md:w-1/2 tw-p-4 tw-mb-8 tw-rounded-lg tw-shadow-lg tw-border">
-        <!-- Kontainer untuk grafik kedua -->
-    </div>
+    .carbon-glow:hover {
+        box-shadow: 0 0 50px rgba(14, 165, 233, 0.3);
+    }
+
+    .chart-hover {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid transparent;
+    }
     
-    <% const co = emissions.reduce((sum, row) => sum + row.CO, 0); 
-    const no2 = emissions.reduce((sum, row) => sum + row.NO2, 0);%>
-    <form action="/products/sell" method="POST" class="tw-max-w-md tw-mx-auto tw-bg-white tw-shadow-lg tw-rounded-lg tw-p-6 tw-mt-8 tw-border tw-border-gray-200">
-        <!-- Header Form -->
-        <h2 class="tw-text-2xl tw-font-semibold tw-text-center tw-text-blue-600 tw-mb-6">Pembelian Karbon dan Nitrogen Dioxide</h2>
+    .chart-hover:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        border-color: rgba(14, 165, 233, 0.1);
+    }
+
+    .gradient-border {
+        background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+        padding: 2px;
+        border-radius: 16px;
+        transition: all 0.3s ease;
+    }
     
-        <!-- Info CO -->
-        <div class="tw-mb-4">
-            <label class="tw-block tw-text-gray-700 tw-font-medium" for="quantity_co">Total Karbon (CO):</label>
-            <p class="tw-text-xl tw-font-semibold tw-text-blue-600">
-                <%= co.toFixed(2) %> g/m<sup>3</sup>
+    .gradient-border:hover {
+        background: linear-gradient(135deg, var(--accent), var(--primary), var(--secondary));
+        transform: scale(1.01);
+    }
+
+    .pulse-dot {
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { 
+            transform: scale(1);
+            opacity: 1; 
+        }
+        50% { 
+            transform: scale(1.2);
+            opacity: 0.7; 
+        }
+        100% { 
+            transform: scale(1);
+            opacity: 1; 
+        }
+    }
+
+    /* Enhanced Typography */
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--dark), var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.25rem;
+        color: var(--gray);
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    /* Improved Card Design */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        overflow: hidden;
+    }
+    
+    .stats-card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        border-radius: 16px;
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        transition: all 0.3s ease;
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Enhanced Form Elements */
+    .form-input-modern {
+        background: rgba(255, 255, 255, 0.9);
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px 16px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-input-modern:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        background: white;
+    }
+
+    /* Button Enhancements */
+    .btn-modern {
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        border: none;
+        border-radius: 12px;
+        padding: 14px 28px;
+        font-weight: 600;
+        color: white;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn-modern::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .btn-modern:hover::before {
+        left: 100%;
+    }
+    
+    .btn-modern:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3);
+    }
+
+    /* Icon Enhancements */
+    .icon-container {
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 16px;
+    }
+    
+    .icon-co {
+        background: linear-gradient(135deg, #ef4444, #f97316);
+    }
+    
+    .icon-no2 {
+        background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    }
+    
+    .icon-leaf {
+        background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    /* Layout Improvements */
+    .main-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    @media (min-width: 1200px) {
+        .main-grid {
+            grid-template-columns: 2fr 1fr;
+        }
+    }
+
+    /* Badge Improvements */
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    
+    .badge-live {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+    }
+
+    /* Chart Container Improvements */
+    .chart-container {
+        background: linear-gradient(to bottom right, #f8fafc, #f1f5f9);
+        border-radius: 12px;
+        padding: 1.5rem;
+        height: 300px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Section Spacing */
+    .section-spacing {
+        margin-bottom: 3rem;
+    }
+
+    /* Custom fixes */
+    .space-y-4 > * + * {
+        margin-top: 1.5rem;
+    }
+    
+    .rounded-top-0 {
+        border-top-left-radius: 0 !important;
+        border-top-right-radius: 0 !important;
+    }
+    
+    .border-gray-300 {
+        border-color: #d1d5db !important;
+    }
+    
+    .text-purple {
+        color: #8b5cf6 !important;
+    }
+
+    /* Improved Number Input */
+    .number-input-wrapper {
+        position: relative;
+    }
+    
+    .number-input-wrapper input[type="number"] {
+        padding-right: 80px !important;
+        -moz-appearance: textfield;
+    }
+    
+    .number-input-wrapper input[type="number"]::-webkit-outer-spin-button,
+    .number-input-wrapper input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    
+    .input-unit {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--primary);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        pointer-events: none;
+    }
+
+    /* Form Label Improvements */
+    .form-label-modern {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        padding: 0.75rem 1rem;
+        background: linear-gradient(135deg, rgba(14, 165, 233, 0.05), rgba(16, 185, 129, 0.05));
+        border-radius: 12px;
+        border-left: 4px solid var(--primary);
+    }
+
+    /* Modal Confirmation Styles */
+    .confirmation-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(8px);
+        z-index: 9999;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .confirmation-modal.show {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 1;
+    }
+
+    .modal-content-enhanced {
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        border-radius: 24px;
+        padding: 0;
+        width: 90%;
+        max-width: 500px;
+        transform: scale(0.8);
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+    }
+
+    .confirmation-modal.show .modal-content-enhanced {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    .modal-header-gradient {
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        padding: 2rem;
+        text-align: center;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .modal-header-gradient::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        animation: rotate 10s linear infinite;
+    }
+
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .modal-icon-container {
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .modal-body {
+        padding: 2rem;
+    }
+
+    .transaction-details {
+        background: rgba(14, 165, 233, 0.05);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border: 1px solid rgba(14, 165, 233, 0.1);
+    }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .detail-row:last-child {
+        border-bottom: none;
+    }
+
+    .detail-label {
+        color: var(--gray);
+        font-weight: 500;
+    }
+
+    .detail-value {
+        font-weight: 600;
+        color: var(--dark);
+    }
+
+    .detail-value.highlight {
+        color: var(--secondary);
+        font-size: 1.1em;
+    }
+
+    .modal-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .btn-cancel {
+        background: linear-gradient(135deg, #64748b, #475569);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-weight: 600;
+        flex: 1;
+        transition: all 0.3s ease;
+    }
+
+    .btn-cancel:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(100, 116, 139, 0.3);
+    }
+
+    .btn-confirm {
+        background: linear-gradient(135deg, var(--secondary), #059669);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-weight: 600;
+        flex: 1;
+        transition: all 0.3s ease;
+    }
+
+    .btn-confirm:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+    }
+
+    .environment-impact {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(14, 165, 233, 0.1));
+        border-radius: 12px;
+        padding: 1rem;
+        margin-top: 1rem;
+        text-align: center;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .impact-text {
+        color: var(--secondary);
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+</style>
+
+<div class="min-vh-100 bg-light py-5">
+    <div class="container">
+        <!-- Enhanced Header -->
+        <div class="text-center mb-5 section-spacing">
+            <div class="d-inline-flex align-items-center justify-content-center mb-4 carbon-glow" 
+                 style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--secondary), var(--primary)); border-radius: 20px;">
+                <i class="bi bi-tree-fill text-white fs-3"></i>
+            </div>
+            <h1 class="hero-title">Carbon Emission Dashboard</h1>
+            <p class="hero-subtitle">
+                Monitor, analyze, and contribute to a sustainable future with real-time emission tracking
             </p>
         </div>
-    
-        
-    
-        <!-- Input untuk jumlah CO yang ingin dibeli -->
-        <div class="tw-mb-4">
-            <label for="co" class="tw-block tw-text-gray-700 tw-font-medium">Masukkan Jumlah Karbon (CO) yang ingin dibeli:</label>
-            <input type="number" id="co" name="co" min="0" value="0" class="tw-w-full tw-p-3 tw-border tw-border-gray-300 tw-rounded-lg tw-mt-2 tw-focus:ring-2 tw-focus:ring-blue-500" placeholder="Jumlah Karbon yang ingin dibeli" required />
+
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- Charts Section -->
+            <div class="space-y-4">
+                <!-- Charts Grid -->
+                <div class="row g-4">
+                    <!-- CO Chart -->
+                    <div class="col-lg-6">
+                        <div class="gradient-border chart-hover h-100">
+                            <div class="glass-card h-100 p-4">
+                                <div class="d-flex align-items-center justify-content-between mb-4">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-container icon-co">
+                                            <i class="bi bi-fire text-white fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="h5 fw-bold text-dark mb-1">Carbon Monoxide</h3>
+                                            <p class="text-muted small mb-0">CO Emissions Tracking</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="pulse-dot rounded-circle" style="width: 8px; height: 8px; background-color: #ef4444;"></div>
+                                        <span class="status-badge badge-live">LIVE</span>
+                                    </div>
+                                </div>
+                                <div id="myplot" class="chart-container">
+                                    <div class="text-center text-muted">
+                                        <div class="spinner-border text-primary mb-2" role="status">
+                                            <span class="visually-hidden">Loading chart...</span>
+                                        </div>
+                                        <p>Loading CO Chart...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NO2 Chart -->
+                    <div class="col-lg-6">
+                        <div class="gradient-border chart-hover h-100">
+                            <div class="glass-card h-100 p-4">
+                                <div class="d-flex align-items-center justify-content-between mb-4">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-container icon-no2">
+                                            <i class="bi bi-industry text-white fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="h5 fw-bold text-dark mb-1">Nitrogen Dioxide</h3>
+                                            <p class="text-muted small mb-0">NO₂ Emissions Tracking</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="pulse-dot rounded-circle" style="width: 8px; height: 8px; background-color: #8b5cf6;"></div>
+                                        <span class="status-badge badge-live">LIVE</span>
+                                    </div>
+                                </div>
+                                <div id="myplot2" class="chart-container">
+                                    <div class="text-center text-muted">
+                                        <div class="spinner-border text-primary mb-2" role="status">
+                                            <span class="visually-hidden">Loading chart...</span>
+                                        </div>
+                                        <p>Loading NO₂ Chart...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date Range Selector -->
+                <div class="glass-card p-4 section-spacing">
+                    <div class="text-center mb-4">
+                        <h3 class="h4 fw-bold text-dark mb-2">Time Range Analysis</h3>
+                        <p class="text-muted">Select specific date ranges to analyze emission patterns</p>
+                    </div>
+
+                    <div class="row g-4 mb-4">
+                        <% 
+                            const s = [];
+                            emissions.forEach(em => s.push(em.update_time));
+                            const minDate = new Date(Math.min(...s.map(d => new Date(d))));
+                            const maxDate = new Date(Math.max(...s.map(d => new Date(d))));
+
+                            const minDateStr = minDate.toISOString().split('T')[0];
+                            const maxDateStr = maxDate.toISOString().split('T')[0];
+
+                            const midDate = new Date((minDate.getTime() + maxDate.getTime()) / 2);
+                            const midDateStr = midDate.toISOString().split('T')[0];
+                        %>
+
+                        <!-- Start Date -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label d-flex align-items-center gap-2 fw-semibold text-dark">
+                                    <i class="bi bi-play-circle text-success"></i>
+                                    Start Date
+                                </label>
+                                <input type="date" 
+                                       id="date-select" 
+                                       min="<%= minDateStr %>" 
+                                       max="<%= maxDateStr %>"
+                                       value="<%= midDateStr %>" 
+                                       class="form-control form-input-modern">
+                            </div>
+                        </div>
+
+                        <!-- End Date -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label d-flex align-items-center gap-2 fw-semibold text-dark">
+                                    <i class="bi bi-stop-circle text-danger"></i>
+                                    End Date
+                                </label>
+                                <input type="date" 
+                                       id="date-select-max" 
+                                       min="<%= minDateStr %>" 
+                                       max="<%= maxDateStr %>"
+                                       value="<%= maxDateStr %>" 
+                                       class="form-control form-input-modern">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button id="updateChartBtn" class="btn btn-modern">
+                            <i class="bi bi-arrow-clockwise me-2"></i>
+                            Update Analysis
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Purchase Form Section -->
+<!-- Purchase Form Section -->
+    <div>
+        <div class="sticky-top" style="top: 20px;">
+            <% const co = emissions.reduce((sum, row) => sum + row.CO, 0); 
+            const no2 = emissions.reduce((sum, row) => sum + row.NO2, 0); %>
+            
+            <!-- PERBAIKAN: Tambahkan action dan method -->
+            <form id="sellForm" method="POST" action="/market/sell" class="carbon-glow">
+                <% if (emissions.length > 0) { %>
+                    <input type="hidden" name="id_vehicle" value="<%= emissions[0].id_vehicle %>">
+                <% } %>
+                
+                <!-- Form Header -->
+                <div class="text-white text-center position-relative overflow-hidden rounded-top-4" 
+                    style="background: linear-gradient(135deg, var(--secondary), var(--primary)); padding: 2rem;">
+                    <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-10"></div>
+                    <div class="position-relative">
+                        <div class="d-inline-flex align-items-center justify-content-center mb-3 rounded-3" 
+                            style="width: 70px; height: 70px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3);">
+                            <i class="bi bi-cart3 text-white fs-4"></i>
+                        </div>
+                        <h2 class="h3 fw-bold mb-2">Carbon Credits</h2>
+                        <p class="text-white-50 mb-0">Sell Your Carbon Credits</p> <!-- Changed text -->
+                    </div>
+                </div>
+
+                <!-- Form Content -->
+                <div class="glass-card rounded-top-0 p-4">
+                    <!-- Stats Overview -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-6">
+                            <div class="stats-card p-3 text-center">
+                                <i class="bi bi-fire text-danger fs-5 mb-2"></i>
+                                <p class="small text-muted mb-1">Available CO</p>
+                                <p class="h6 fw-bold text-dark mb-0"><%= co.toFixed(2) %> g/m³</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="stats-card p-3 text-center">
+                                <i class="bi bi-industry text-purple fs-5 mb-2"></i>
+                                <p class="small text-muted mb-1">Available NO₂</p>
+                                <p class="h6 fw-bold text-dark mb-0"><%= no2.toFixed(2) %> g/m³</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CO Input -->
+                    <div class="mb-4">
+                        <div class="form-label-modern">
+                            <i class="bi bi-fire text-danger fs-5"></i>
+                            <div>
+                                <div class="fw-semibold text-dark">Carbon Monoxide (CO)</div>
+                                <div class="small text-muted">Enter amount to sell</div> <!-- Changed text -->
+                            </div>
+                        </div>
+                        
+                        <div class="number-input-wrapper">
+                            <input type="number" 
+                                id="co" 
+                                name="co" 
+                                min="0" 
+                                max="<%= co %>" 
+                                value="0"
+                                class="form-control form-input-modern"
+                                placeholder="0.00"
+                                step="0.01"
+                                required />
+                            <span class="input-unit">g/m³</span>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="small text-muted">Min: 0 g/m³</span>
+                            <span class="small fw-semibold text-danger">Max: <%= co.toFixed(2) %> g/m³</span>
+                        </div>
+                        
+                        <!-- Custom Number Controls -->
+                        <div class="d-flex gap-2 mt-3">
+                            <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="adjustCoValue(-0.1)">
+                                <i class="bi bi-dash-lg"></i> 0.1
+                            </button>
+                            <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="adjustCoValue(-1)">
+                                <i class="bi bi-dash-lg"></i> 1
+                            </button>
+                            <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="adjustCoValue(1)">
+                                <i class="bi bi-plus-lg"></i> 1
+                            </button>
+                            <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="adjustCoValue(0.1)">
+                                <i class="bi bi-plus-lg"></i> 0.1
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Total Preview -->
+                    <div class="bg-primary bg-opacity-10 rounded-3 p-3 text-center border border-primary border-opacity-25 mb-4">
+                        <p class="small text-muted mb-1">Total Carbon Credits to Sell</p> <!-- Changed text -->
+                        <p class="h4 fw-bold text-primary mb-0" id="totalPreview">0.00 g/m³</p>
+                    </div>
+
+                    <!-- PERBAIKAN: Ganti type menjadi "button" dan handle dengan JavaScript -->
+                    <button type="button" id="sellButton" class="btn btn-modern w-100">
+                        <i class="bi bi-currency-exchange me-2"></i> <!-- Changed icon -->
+                        Sell Carbon Credits <!-- Changed text -->
+                    </button>
+
+                    <!-- Info Footer -->
+                    <div class="text-center pt-3 mt-3 border-top border-gray-300">
+                        <p class="small text-muted">
+                            <i class="bi bi-shield-check text-success me-1"></i> <!-- Changed icon -->
+                            Each sale contributes to verified carbon reduction projects worldwide. <!-- Changed text -->
+                        </p>
+                    </div>
+                </div>
+            </form>
         </div>
-    
-        
-    
-        <!-- Tombol untuk beli -->
-        <div class="tw-text-center">
-            <button type="submit" class="tw-w-full tw-bg-blue-600 tw-text-white tw-py-3 tw-rounded-lg tw-hover:bg-blue-700 tw-focus:outline-none tw-focus:ring-2 tw-focus:ring-blue-400">
-                Tambahkan ke Keranjang
-            </button>
-        </div>
-    
-        <!-- Footer -->
-        <div class="tw-mt-4 tw-text-center tw-text-gray-500 tw-text-sm">
-            <p>Dengan membeli emisi karbon , Anda turut berkontribusi untuk menjaga lingkungan.</p>
-        </div>
-    </form>
-    
-    
-    
-      
-      
-</div>
-
-<!-- Data emisi disimpan dalam elemen dengan ID '_data' -->
-<div id="_data" data-params="<%= JSON.stringify(emissions) %>"></div>
-
-<!-- Kontrol input untuk memilih tanggal -->
-<div class="tw-flex tw-flex-col tw-gap-6 tw-items-center tw-mt-6">
-    <% 
-        // Mengambil nilai minimum dan maksimum tanggal dari data emisi
-        const s = [];
-        emissions.forEach(em => s.push(em.update_time));
-        const minDate = new Date(Math.min(...s.map(d => new Date(d))));
-        const maxDate = new Date(Math.max(...s.map(d => new Date(d))));
-
-        // Format tanggal ke format 'YYYY-MM-DD'
-        const minDateStr = minDate.toISOString().split('T')[0];
-        const maxDateStr = maxDate.toISOString().split('T')[0];
-
-        // Menghitung tanggal tengah
-        const midDate = new Date((minDate.getTime() + maxDate.getTime()) / 2);
-        const midDateStr = midDate.toISOString().split('T')[0];
-    %>
-
-    <!-- Rentang input tanggal -->
-    <div class="tw-flex tw-gap-6 tw-items-center">
-        <div class="tw-flex tw-flex-col">
-            <label for="date-select" class="tw-text-lg tw-font-medium">Select Start Date:</label>
-            <input type="date" id="date-select" 
-                   min="<%= minDateStr %>" max="<%= maxDateStr %>"
-                   value="<%= midDateStr %>" 
-                   class="tw-px-4 tw-py-3 tw-border tw-rounded-lg tw-shadow-sm tw-focus:outline-none tw-focus:ring-2 tw-focus:ring-blue-500">
-        </div>
-
-        <div class="tw-flex tw-flex-col">
-            <label for="date-select-max" class="tw-text-lg tw-font-medium">Select End Date:</label>
-            <input type="date" id="date-select-max" 
-                   min="<%= minDateStr %>" max="<%= maxDateStr %>"
-                   value="<%= maxDateStr %>" 
-                   class="tw-px-4 tw-py-3 tw-border tw-rounded-lg tw-shadow-sm tw-focus:outline-none tw-focus:ring-2 tw-focus:ring-blue-500">
+    </div>
         </div>
     </div>
 </div>
 
-<script type="module">
-    const rangeDateStart = document.getElementById("date-select");  // Input Start Date
-    const rangeDateEnd = document.getElementById("date-select-max");  // Input End Date
-    const Emisi = document.getElementById('_data').dataset.params;  // Ambil data dari elemen _data
-    const dataEmisi = JSON.parse(Emisi);  // Parse data menjadi objek
+<!-- Confirmation Modal -->
+<div id="confirmationModal" class="confirmation-modal">
+    <div class="modal-content-enhanced">
+        <div class="modal-header-gradient">
+            <div class="modal-icon-container">
+                <i class="bi bi-shield-check text-white fs-2"></i>
+            </div>
+            <h3 class="h4 fw-bold mb-2">Confirm Carbon Sale</h3>
+            <p class="text-white-50 mb-0">Please review your transaction details</p>
+        </div>
+        
+        <div class="modal-body">
+            <div class="transaction-details">
+                <div class="detail-row">
+                    <span class="detail-label">Vehicle ID:</span>
+                    <span class="detail-value" id="modalVehicleId">-</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Carbon Type:</span>
+                    <span class="detail-value">Carbon Monoxide (CO)</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Amount to Sell:</span>
+                    <span class="detail-value" id="modalAmount">0.00 g/m³</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Remaining Balance:</span>
+                    <span class="detail-value" id="modalRemaining">0.00 g/m³</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Transaction Type:</span>
+                    <span class="detail-value highlight">Carbon Credit Sale</span>
+                </div>
+            </div>
 
-    // Fungsi untuk membuat plot berdasarkan rentang tanggal dari input date
-    function createPlot(minTime, maxTime) {
-        const plot = Plot.plot({
-            x: {
-                domain: [new Date(minTime), new Date(maxTime)],  // Rentang waktu berdasarkan minTime dan maxTime
-                grid: true
-            },
-            y: {
-                label: "CO",
-                labelAnchor: "top"
-            },
-            color: {legend: true},
-            marks: [
-                Plot.lineY(dataEmisi, {x: "update_time", y: "CO", stroke: "red"}), // Grafik CO
-            ],
-        });
+            <div class="environment-impact">
+                <i class="bi bi-tree-fill text-success me-2"></i>
+                <span class="impact-text">This sale contributes to global carbon reduction efforts</span>
+            </div>
 
-        // Menambahkan plot ke dalam elemen dengan id 'myplot'
-        document.getElementById("myplot").innerHTML = "";  // Hapus plot sebelumnya
-        document.getElementById("myplot").append(plot);  // Menampilkan plot baru
+            <div class="modal-actions">
+                <button type="button" id="cancelButton" class="btn-cancel">
+                    <i class="bi bi-x-circle me-2"></i>
+                    Cancel
+                </button>
+                <button type="button" id="confirmButton" class="btn-confirm">
+                    <i class="bi bi-check-circle me-2"></i>
+                    Confirm Sale
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Data emisi -->
+<div id="_data" data-params="<%= JSON.stringify(emissions) %>" class="d-none"></div>
+
+<!-- Load Plot library -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Element references
+        const rangeDateStart = document.getElementById("date-select");
+        const rangeDateEnd = document.getElementById("date-select-max");
+        const updateChartBtn = document.getElementById("updateChartBtn");
+        const totalPreview = document.getElementById("totalPreview");
+        const coInput = document.getElementById("co");
+        const sellButton = document.getElementById("sellButton");
+        const confirmationModal = document.getElementById("confirmationModal");
+        const cancelButton = document.getElementById("cancelButton");
+        const confirmButton = document.getElementById("confirmButton");
+        const modalVehicleId = document.getElementById("modalVehicleId");
+        const modalAmount = document.getElementById("modalAmount");
+        const modalRemaining = document.getElementById("modalRemaining");
+        
+        // Data initialization
+        const Emisi = document.getElementById('_data').dataset.params;
+        const dataEmisi = JSON.parse(Emisi);
+        const maxCO = <%= co %>;
+
+        console.log('Data loaded:', dataEmisi.length, 'records');
+        console.log('Max CO available:', maxCO);
+
+        // Initialize charts and preview
+        initializeApp();
+
+        function initializeApp() {
+            // Initialize chart with default date range
+            setTimeout(() => {
+                createPlot(rangeDateStart.value, rangeDateEnd.value);
+            }, 100);
+            
+            // Initialize total preview
+            updateTotalPreview();
+            
+            // Add event listeners
+            setupEventListeners();
+        }
+
+        function setupEventListeners() {
+            // Chart controls
+            updateChartBtn.addEventListener("click", () => {
+                createPlot(rangeDateStart.value, rangeDateEnd.value);
+            });
+
+            rangeDateStart.addEventListener("change", () => {
+                createPlot(rangeDateStart.value, rangeDateEnd.value);
+            });
+
+            rangeDateEnd.addEventListener("change", () => {
+                createPlot(rangeDateStart.value, rangeDateEnd.value);
+            });
+
+            // CO input handling
+            coInput.addEventListener('input', function(e) {
+                validateCoInput();
+                updateTotalPreview();
+            });
+
+            // Sell button
+            sellButton.addEventListener('click', handleSellClick);
+
+            // Modal controls
+            cancelButton.addEventListener('click', closeModal);
+            confirmButton.addEventListener('click', handleConfirmSale);
+
+            // Modal background click
+            confirmationModal.addEventListener('click', function(e) {
+                if (e.target === confirmationModal) {
+                    closeModal();
+                }
+            });
+
+            // Escape key to close modal
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && confirmationModal.classList.contains('show')) {
+                    closeModal();
+                }
+            });
+
+            // Window resize
+            window.addEventListener('resize', function() {
+                setTimeout(() => {
+                    createPlot(rangeDateStart.value, rangeDateEnd.value);
+                }, 300);
+            });
+        }
+
+        function validateCoInput() {
+            const value = parseFloat(coInput.value) || 0;
+            
+            if (value > maxCO) {
+                coInput.value = maxCO;
+                showNotification(`Amount adjusted to maximum available: ${maxCO.toFixed(2)} g/m³`, 'warning');
+            }
+            if (value < 0) {
+                coInput.value = 0;
+            }
+            
+            // Format to 2 decimal places
+            if (coInput.value !== '' && !isNaN(value)) {
+                coInput.value = value.toFixed(2);
+            }
+        }
+
+        function updateTotalPreview() {
+            const coValue = parseFloat(coInput.value) || 0;
+            totalPreview.textContent = coValue.toFixed(2) + ' g/m³';
+        }
+
+        function handleSellClick() {
+            const coValue = parseFloat(coInput.value) || 0;
+            
+            // Validation
+            if (coValue <= 0) {
+                showNotification('Please enter a valid amount greater than 0', 'warning');
+                coInput.focus();
+                return;
+            }
+            
+            if (coValue > maxCO) {
+                showNotification(`Amount exceeds available balance of ${maxCO.toFixed(2)} g/m³`, 'error');
+                coInput.focus();
+                return;
+            }
+
+            // Update modal content
+            const vehicleId = '<%= emissions[0]?.id_vehicle || "N/A" %>';
+            modalVehicleId.textContent = vehicleId;
+            modalAmount.textContent = coValue.toFixed(2) + ' g/m³';
+            modalRemaining.textContent = (maxCO - coValue).toFixed(2) + ' g/m³';
+
+            // Show modal
+            showModal();
+        }
+
+        function showModal() {
+            confirmationModal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            // Focus confirm button for accessibility
+            setTimeout(() => confirmButton.focus(), 300);
+        }
+
+        function closeModal() {
+            confirmationModal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+            // Return focus to sell button
+            sellButton.focus();
+        }
+
+        function handleConfirmSale() {
+            const coValue = parseFloat(coInput.value) || 0;
+            
+            // Final validation
+            if (coValue <= 0 || coValue > maxCO) {
+                showNotification('Invalid amount. Please check your input.', 'error');
+                closeModal();
+                return;
+            }
+
+            // Show loading state
+            confirmButton.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm me-2"></i>Processing...';
+            confirmButton.disabled = true;
+
+            // Submit the form
+            submitForm();
+        }
+
+        function submitForm() {
+            const form = document.getElementById('sellForm');
+            
+            // Create a temporary form data to validate
+            const formData = new FormData(form);
+            const coValue = parseFloat(formData.get('co')) || 0;
+            
+            if (coValue <= 0 || coValue > maxCO) {
+                showNotification('Transaction validation failed. Please try again.', 'error');
+                resetConfirmButton();
+                closeModal();
+                return;
+            }
+
+            // Use traditional form submission
+            form.submit();
+        }
+
+        function resetConfirmButton() {
+            confirmButton.innerHTML = '<i class="bi bi-check-circle me-2"></i>Confirm Sale';
+            confirmButton.disabled = false;
+        }
+
+        // Chart functions
+        function createPlot(minTime, maxTime) {
+            const selectedStartDate = new Date(minTime);
+            const selectedEndDate = new Date(maxTime);
+            selectedEndDate.setHours(23, 59, 59, 999);
+            
+            const filteredData = dataEmisi.filter(d => {
+                const updateTime = new Date(d.update_time);
+                return updateTime >= selectedStartDate && updateTime <= selectedEndDate;
+            });
+
+            console.log('Filtered data for charts:', filteredData.length, 'records');
+
+            if (filteredData.length > 0) {
+                renderCharts(filteredData);
+            } else {
+                showNoDataState();
+            }
+        }
+
+        function renderCharts(filteredData) {
+            try {
+                const newMinTime = d3.min(filteredData, d => new Date(d.update_time));
+                const newMaxTime = d3.max(filteredData, d => new Date(d.update_time));
+
+                // CO Chart
+                const plotCO = Plot.plot({
+                    width: Math.max(300, document.getElementById('myplot').clientWidth - 40),
+                    height: 280,
+                    x: {
+                        domain: [new Date(newMinTime), new Date(newMaxTime)],
+                        grid: true,
+                        label: "Timeline",
+                        ticks: filteredData.length > 10 ? 5 : filteredData.length
+                    },
+                    y: {
+                        label: "CO Concentration (g/m³)",
+                        labelAnchor: "top",
+                        grid: true
+                    },
+                    color: { legend: true },
+                    marks: [
+                        Plot.lineY(filteredData, {
+                            x: "update_time", 
+                            y: "CO", 
+                            stroke: "#ef4444",
+                            strokeWidth: 3,
+                            curve: "natural",
+                            tip: true
+                        }),
+                        Plot.areaY(filteredData, {
+                            x: "update_time",
+                            y: "CO",
+                            fill: "#ef4444",
+                            fillOpacity: 0.1
+                        }),
+                        Plot.ruleY([0], {stroke: "#64748b", strokeOpacity: 0.3})
+                    ],
+                });
+
+                // NO2 Chart
+                const plotNO2 = Plot.plot({
+                    width: Math.max(300, document.getElementById('myplot2').clientWidth - 40),
+                    height: 280,
+                    x: {
+                        domain: [new Date(newMinTime), new Date(newMaxTime)],
+                        grid: true,
+                        label: "Timeline",
+                        ticks: filteredData.length > 10 ? 5 : filteredData.length
+                    },
+                    y: {
+                        label: "NO₂ Concentration (g/m³)",
+                        labelAnchor: "top",
+                        grid: true
+                    },
+                    color: { legend: true },
+                    marks: [
+                        Plot.lineY(filteredData, {
+                            x: "update_time", 
+                            y: "NO2", 
+                            stroke: "#8b5cf6",
+                            strokeWidth: 3,
+                            curve: "natural",
+                            tip: true
+                        }),
+                        Plot.areaY(filteredData, {
+                            x: "update_time",
+                            y: "NO2",
+                            fill: "#8b5cf6",
+                            fillOpacity: 0.1
+                        }),
+                        Plot.ruleY([0], {stroke: "#64748b", strokeOpacity: 0.3})
+                    ],
+                });
+
+                // Clear and append new charts
+                document.getElementById("myplot").innerHTML = "";
+                document.getElementById("myplot").append(plotCO);
+                
+                document.getElementById("myplot2").innerHTML = "";
+                document.getElementById("myplot2").append(plotNO2);
+
+            } catch (error) {
+                console.error('Error creating plots:', error);
+                showErrorState();
+            }
+        }
+
+        function showNoDataState() {
+            const noDataHTML = `
+                <div class="d-flex flex-column align-items-center justify-content-center h-100 text-muted">
+                    <i class="bi bi-graph-up fs-1 mb-3 opacity-50"></i>
+                    <p class="h5 fw-semibold mb-2">No Data Available</p>
+                    <p class="text-center">Please select a different date range</p>
+                </div>
+            `;
+            document.getElementById("myplot").innerHTML = noDataHTML;
+            document.getElementById("myplot2").innerHTML = noDataHTML;
+        }
+
+        function showErrorState() {
+            const errorHTML = `
+                <div class="d-flex flex-column align-items-center justify-content-center h-100 text-danger">
+                    <i class="bi bi-exclamation-triangle fs-1 mb-3"></i>
+                    <p class="h5 fw-semibold mb-2">Chart Error</p>
+                    <p class="text-center">Failed to load charts. Please refresh the page.</p>
+                </div>
+            `;
+            document.getElementById("myplot").innerHTML = errorHTML;
+            document.getElementById("myplot2").innerHTML = errorHTML;
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            // Remove existing notifications
+            const existingNotifications = document.querySelectorAll('.custom-notification');
+            existingNotifications.forEach(notif => notif.remove());
+
+            const notification = document.createElement('div');
+            notification.className = `custom-notification position-fixed top-0 end-0 m-4 p-3 rounded-3 border-0 text-white ${
+                type === 'success' ? 'bg-success' : 
+                type === 'error' ? 'bg-danger' : 
+                type === 'warning' ? 'bg-warning' : 'bg-info'
+            }`;
+            notification.style.zIndex = '10000';
+            notification.style.maxWidth = '350px';
+            notification.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
+            notification.style.transition = 'all 0.3s ease';
+            
+            const icon = type === 'success' ? 'bi-check-circle' : 
+                        type === 'error' ? 'bi-exclamation-triangle' : 
+                        type === 'warning' ? 'bi-exclamation-circle' : 'bi-info-circle';
+            
+            notification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="bi ${icon} fs-5 me-3"></i>
+                    <div class="flex-grow-1">${message}</div>
+                    <button type="button" class="btn-close btn-close-white ms-3" onclick="this.parentElement.parentElement.remove()"></button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+                notification.style.opacity = '1';
+            }, 10);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.style.transform = 'translateX(100%)';
+                    notification.style.opacity = '0';
+                    setTimeout(() => {
+                        if (notification.parentElement) {
+                            notification.remove();
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        }
+
+        // Utility function to check if element is in viewport
+        function isInViewport(element) {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+
+        // Lazy load charts when in viewport
+        function lazyLoadCharts() {
+            const chartContainers = [document.getElementById('myplot'), document.getElementById('myplot2')];
+            
+            chartContainers.forEach(container => {
+                if (container && isInViewport(container) && !container.hasChildNodes()) {
+                    createPlot(rangeDateStart.value, rangeDateEnd.value);
+                }
+            });
+        }
+
+        // Initialize lazy loading
+        window.addEventListener('scroll', lazyLoadCharts);
+        lazyLoadCharts(); // Initial check
+    });
+
+    // Global function untuk adjust CO value
+    function adjustCoValue(change) {
+        const coInput = document.getElementById('co');
+        const maxCO = <%= co %>;
+        let currentValue = parseFloat(coInput.value) || 0;
+        let newValue = currentValue + change;
+        
+        // Validate bounds
+        if (newValue < 0) newValue = 0;
+        if (newValue > maxCO) newValue = maxCO;
+        
+        coInput.value = newValue.toFixed(2);
+        
+        // Trigger input event untuk update preview
+        const event = new Event('input', { bubbles: true });
+        coInput.dispatchEvent(event);
+        
+        // Focus the input after adjustment
+        coInput.focus();
     }
 
-    // Set plot awal dengan rentang yang diambil dari input date
-    createPlot(rangeDateStart.value, rangeDateEnd.value);
-
-    // Event listener untuk menangani perubahan tanggal pada input date
-    rangeDateStart.addEventListener("change", updatePlot);
-    rangeDateEnd.addEventListener("change", updatePlot);
-
-    // Fungsi untuk memperbarui plot berdasarkan nilai rentang tanggal
-    function updatePlot() {
-        // Ambil nilai yang dipilih dari input start dan end date
-        const selectedStartDate = new Date(rangeDateStart.value);  // Ambil tanggal mulai
-        const selectedEndDate = new Date(rangeDateEnd.value);  // Ambil tanggal selesai
+    // Global function untuk quick set values
+    function setCoValue(percentage) {
+        const coInput = document.getElementById('co');
+        const maxCO = <%= co %>;
+        const newValue = (maxCO * percentage) / 100;
         
-        // Pastikan selectedEndDate mencakup hingga akhir hari
-        selectedEndDate.setHours(23, 59, 59, 999);
+        coInput.value = newValue.toFixed(2);
         
-        // Filter data berdasarkan rentang tanggal yang dipilih
-        const filteredData = dataEmisi.filter(d => {
-            const updateTime = new Date(d.update_time);
-            return updateTime >= selectedStartDate && updateTime <= selectedEndDate;
-        });
-
-        // Ambil min dan max dari data yang sudah difilter
-        const newMinTime = d3.min(filteredData, d => new Date(d.update_time));
-        const newMaxTime = d3.max(filteredData, d => new Date(d.update_time));
-
-        // Perbarui plot berdasarkan rentang waktu yang baru
-        createPlot(newMinTime, newMaxTime);
+        // Trigger input event untuk update preview
+        const event = new Event('input', { bubbles: true });
+        coInput.dispatchEvent(event);
+        
+        // Focus the input after setting value
+        coInput.focus();
     }
+
+    // Add quick action buttons to the form (optional enhancement)
+    function addQuickActions() {
+        const form = document.getElementById('sellForm');
+        const quickActions = document.createElement('div');
+        quickActions.className = 'd-flex gap-2 mb-3';
+        quickActions.innerHTML = `
+            <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="setCoValue(25)">25%</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="setCoValue(50)">50%</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="setCoValue(75)">75%</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="setCoValue(100)">100%</button>
+        `;
+        
+        const coInputContainer = coInput.closest('.mb-4');
+        coInputContainer.appendChild(quickActions);
+    }
+
+    // Initialize quick actions when DOM is loaded
+    document.addEventListener('DOMContentLoaded', addQuickActions);
 </script>

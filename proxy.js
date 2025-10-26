@@ -1,8 +1,8 @@
-// const { MongoClient, ServerApiVersion } = require('mongodb');
-// const uri = "mongodb+srv://souka:souka212@cluster1.ufd8j.mongodb.net/?retryWrites=true&w=majority&appName=cluster1";
+// const { Client, ServerApiVersion } = require('db');
+// const uri = "db+srv://souka:souka212@cluster1.ufd8j.db.net/?retryWrites=true&w=majority&appName=cluster1";
 
-// // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-// const client = new MongoClient(uri, {
+// // Create a Client with a ClientOptions object to set the Stable API version
+// const client = new Client(uri, {
 //   serverApi: {
 //     version: ServerApiVersion.v1,
 //     strict: true,
@@ -53,10 +53,10 @@
 // run().catch(console.dir);
 
 
-// const { MongoClient, ObjectId, ServerApiVersion } = require('mongodb');
-// const uri = "mongodb+srv://souka:souka212@cluster1.ufd8j.mongodb.net/?retryWrites=true&w=majority&appName=cluster1";
+// const { Client, ObjectId, ServerApiVersion } = require('db');
+// const uri = "db+srv://souka:souka212@cluster1.ufd8j.db.net/?retryWrites=true&w=majority&appName=cluster1";
 
-// const client = new MongoClient(uri, {
+// const client = new Client(uri, {
 //   serverApi: {
 //     version: ServerApiVersion.v1,
 //     strict: true,
@@ -134,74 +134,75 @@
 // run().catch(console.dir);
 
 // getting-started.js
-const mongoose = require('mongoose');
+// const ose = require('mongoose');
 
-// URL koneksi MongoDB Cloud
-const mongoURI = 'mongodb+srv://souka:souka212@cluster1.ufd8j.mongodb.net/data_kendaraan?retryWrites=true&w=majority&appName=cluster1';
 
-// Koneksi ke MongoDB saat aplikasi dimulai
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Terhubung ke MongoDB'))
-  .catch(err => console.error('Terjadi kesalahan saat menghubungkan ke MongoDB:', err));
+// // URL koneksi DB Cloud
+// const URI = 'db+srv://souka:souka212@cluster1.ufd8j.db.net/data_kendaraan?retryWrites=true&w=majority&appName=cluster1';
 
-// Membuat skema yang sesuai dengan data yang ada di database
-const dataSchema = new mongoose.Schema({
-    nama: String,
-    email: String,
-    no_Hp: String
-}, { versionKey: false });
+// // Koneksi ke DB saat aplikasi dimulai
+// ose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
+//   .then(() => console.log('Terhubung ke DB'))
+//   .catch(err => console.error('Terjadi kesalahan saat menghubungkan ke DB:', err));
 
-// Membuat model untuk koleksi 'data1'
-const Data = mongoose.model('data1', dataSchema);
+// // Membuat skema yang sesuai dengan data yang ada di database
+// const dataSchema = new ose.Schema({
+//     nama: String,
+//     email: String,
+//     no_Hp: String
+// }, { versionKey: false });
 
-// Fungsi untuk menambah data baru atau mengupdate data
-async function addData(newData, t) {
-    try {
-        if (t === 1) {
-            const filter = { _id: newData._id };
-            const update = { nama: newData.nama, email: newData.email, no_Hp: newData.no_Hp };
+// // Membuat model untuk koleksi 'data1'
+// const Data = ose.model('data1', dataSchema);
 
-            let updatedDoc = await Data.findOneAndUpdate(filter, update, { new: true });
-            console.log("Data berhasil diperbarui:", updatedDoc);
-        } else {
-            const insertedData = await Data.create(newData);
-            console.log('Data baru berhasil ditambahkan:', insertedData);
-        }
-    } catch (error) {
-        console.error('Terjadi kesalahan:', error);
-    }
-}
+// // Fungsi untuk menambah data baru atau mengupdate data
+// async function addData(newData, t) {
+//     try {
+//         if (t === 1) {
+//             const filter = { _id: newData._id };
+//             const update = { nama: newData.nama, email: newData.email, no_Hp: newData.no_Hp };
 
-// Fungsi untuk menampilkan semua data
-async function fetchAllData(data) {
-    try {
-        const allData = await Data.find(data);
-        return allData;
-    } catch (error) {
-        console.error('Terjadi kesalahan:', error);
-    }
-}
+//             let updatedDoc = await Data.findOneAndUpdate(filter, update, { new: true });
+//             console.log("Data berhasil diperbarui:", updatedDoc);
+//         } else {
+//             const insertedData = await Data.create(newData);
+//             console.log('Data baru berhasil ditambahkan:', insertedData);
+//         }
+//     } catch (error) {
+//         console.error('Terjadi kesalahan:', error);
+//     }
+// }
 
-// Fungsi untuk menghapus data
-async function deleteData(data) {
-    try {
-        if (!mongoose.Types.ObjectId.isValid(data)) {
-            console.log("ID tidak valid");
-            return null;
-        }
-        const deleted = await Data.findByIdAndDelete({ _id: data });
-        return deleted;
-    } catch (error) {
-        console.error('Terjadi kesalahan:', error);
-    }
-}
+// // Fungsi untuk menampilkan semua data
+// async function fetchAllData(data) {
+//     try {
+//         const allData = await Data.find(data);
+//         return allData;
+//     } catch (error) {
+//         console.error('Terjadi kesalahan:', error);
+//     }
+// }
 
-// Pada akhir aplikasi, tutup koneksi
-process.on('SIGINT', async () => {
-    await mongoose.connection.close();
-    console.log('Koneksi MongoDB ditutup');
-    process.exit(0);
-});
+// // Fungsi untuk menghapus data
+// async function deleteData(data) {
+//     try {
+//         if (!ose.Types.ObjectId.isValid(data)) {
+//             console.log("ID tidak valid");
+//             return null;
+//         }
+//         const deleted = await Data.findByIdAndDelete({ _id: data });
+//         return deleted;
+//     } catch (error) {
+//         console.error('Terjadi kesalahan:', error);
+//     }
+// }
+
+// // Pada akhir aplikasi, tutup koneksi
+// process.on('SIGINT', async () => {
+//     await ose.connection.close();
+//     console.log('Koneksi DB ditutup');
+//     process.exit(0);
+// });
 
 
 // deleteData('66dd5ee437bb82394fb61').then((r) => {
@@ -217,7 +218,7 @@ process.on('SIGINT', async () => {
 // fetchAllData().then((r) => {
 //     console.log(r);
 // })
-module.exports = {fetchAllData,addData,deleteData};
+// module.exports = {fetchAllData,addData,deleteData};
 
 // Panggil fungsi untuk menambah data baru
 // addData().then(() => {

@@ -36,12 +36,12 @@ const jwt = require('jsonwebtoken')
 
 // }
 router.get('/', verifyToken, async(req, res) => {
-    
+
     
     const datas = await getData(`SELECT * FROM profilseller WHERE id_user = ?`, [ req.user]);
-   console.log(datas);
+
     if (datas.length >0 ){
-   console.log(datas);
+   console.log(datas[0]);
     res.render('users/usersData',{ layout: 'layouts/main_layout', role :req.role ,datas:datas[0]})
 
    }else{
@@ -119,6 +119,55 @@ router.get('/update',verifyToken,async(req,res)=>{
 
     res.render('users/addProfile', { layout: 'layouts/main_layout', role :req.role,datas:datas[0] })
 })
+router.post('/update', verifyToken, upload.single('img'), async (req, res) => {
+    try {
+        console.log('=== 🔄 UPDATE PROFILE REQUEST ===');
+        
+        console.log('📝 Request Body:', req.body);
+        console.log('📁 Request File:', req.file);
+        console.log('👤 User ID:', req.user);
+
+        if (!req.body.fullName || req.body.fullName.trim() === '') {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Full Name is required.' 
+            });
+        }
+
+        let updateQuery;
+        let queryParams;
+
+        if (req.file) {
+            // ✅ File disimpan di public/img/users/filename.jpg
+            // ✅ Diakses via /img/users/filename.jpg
+            updateQuery = `
+                UPDATE profilseller 
+                SET fullName = ?, address = ?, shopName = ?, no_Hp = ?, rating = 0, img = ?, total_co = 0
+                WHERE id_user = ?
+            `;
+            queryParams = [req.body.fullName, req.body.address, req.body.shopName, req.body.noHp, req.file.filename, req.user];
+        } else {
+            updateQuery = `
+                UPDATE profilseller 
+                SET fullName = ?, address = ?, shopName = ?, no_Hp = ?, rating = 0, total_co = 0
+                WHERE id_user = ?
+            `;
+            queryParams = [req.body.fullName, req.body.address, req.body.shopName, req.body.noHp, req.user];
+        }
+
+        await getData(updateQuery, queryParams);
+        console.log('✅ Profile updated successfully');
+        res.redirect('/users');
+
+    } catch (error) {
+        console.error('❌ Error updating profile:', error);
+        res.status(500).json({ 
+            success: false, 
+            error: 'An error occurred while updating the profile.' 
+        });
+    }
+});
+
 router.get('/sensors/add_emission', async(req, res) => {
     const vehicleID = '6190eefa-b7a4-476c-befa-8d8297ba38a3';
     // const query2 = `SELECT SUM(e.CO) AS total_co FROM emission e WHERE e.id_vehicle = ?`

@@ -1,29 +1,26 @@
 
-      
-      <div class="reg-form-text">
-         Login Form
-     </div>
-  
-     
-     <form action="/login/user" method="post">
-         
-         <div class="reg-form-field">
-             <input type="text" id="email" name="email" required>
-             <span class="fas fa-envelope"></span>
-             <label for="email">Email</label>
-         </div>
-         <div class="reg-form-field">
-             <input type="password" id="password" name="password" required>
-             <span class="fas fa-lock"></span>
-             <label for="password">Password</label>
-         </div>
-         
-         <div class="reg-form-forgot-pass">
-             <a href="#">Forgot Password?</a>
-         </div>
-         <button type="submit">Login</button>
-         <div class="reg-form-sign-up">
-             Already a member?
-             <a href="#">Login now</a>
-         </div>
-     </form>
+<div class="reg-form-text">
+    Login Form
+</div>
+    
+    <form action="/login/user" method="post">
+        <div class="reg-form-field">
+            <input type="text" id="email" name="email" placeholder=" " required>
+            <span class="icon fas fa-envelope"></span>
+            <label class="label" for="email">Email</label>
+        </div>
+        <div class="reg-form-field">
+            <input type="password" id="password" name="password" placeholder=" " required>
+            <span class="icon fas fa-lock"></span>
+            <label class="label" for="password">Password</label>
+        </div>
+        
+        <div class="reg-form-forgot-pass">
+            <a href="#">Forgot Password?</a>
+        </div>
+        <button type="submit">Login</button>
+        <div class="reg-form-sign-up">
+            Don't have an account?
+            <a href="/register">Sign up now</a>
+        </div>
+    </form>

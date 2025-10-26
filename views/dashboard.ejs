@@ -1,80 +1,109 @@
-<main class="tw-mt-6">
-    <!-- Summary Section -->
-    <div class="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-6">
+<main class="modern-dashboard">
+  <!-- Summary Section -->
+  <div class="summary-grid">
       <!-- Card Jumlah Kendaraan -->
-      <div class="tw-bg-white tw-shadow-md tw-rounded-lg tw-p-6">
-        <h2 class="tw-text-lg tw-font-semibold tw-text-gray-700">Jumlah Kendaraan</h2>
-        <p class="tw-text-2xl tw-font-bold tw-text-gray-900 tw-mt-2">500</p>
+      <div class="dashboard-card card-vehicles">
+          <div class="card-header">
+              <h2 class="card-title">Jumlah Kendaraan</h2>
+              <div class="card-icon">
+                  <i class="bi bi-car-front"></i>
+              </div>
+          </div>
+          <p class="card-value">500</p>
+          <p class="card-unit">kendaraan terdaftar</p>
       </div>
+
       <!-- Card Total Emisi CO -->
-      <div class="tw-bg-white tw-shadow-md tw-rounded-lg tw-p-6">
-        <h2 class="tw-text-lg tw-font-semibold tw-text-gray-700">Total Emisi CO</h2>
-        <p class="tw-text-2xl tw-font-bold tw-text-gray-900 tw-mt-2">350 ppm</p>
-      
-        <a href="/users" 
-        class="tw-bg-blue-500 tw-text-white tw-font-semibold tw-px-4 tw-py-2 tw-rounded-lg tw-text-sm hover:tw-bg-blue-600 focus:tw-ring-2 focus:tw-ring-blue-300"
-        onclick="handleSellCarbon()">Sell</a>
-            
+      <div class="dashboard-card card-co">
+          <div class="card-header">
+              <h2 class="card-title">Total Emisi CO</h2>
+              <div class="card-icon">
+                  <i class="bi bi-cloud-fog"></i>
+              </div>
+          </div>
+          <p class="card-value">350 <span class="card-unit">ppm</span></p>
+          <button class="sell-button" onclick="handleSellCarbon()">
+              <i class="bi bi-currency-dollar"></i> Sell Carbon
+          </button>
       </div>
+
       <!-- Card Total Emisi NO2 -->
-      <div class="tw-bg-white tw-shadow-md tw-rounded-lg tw-p-6">
-        <h2 class="tw-text-lg tw-font-semibold tw-text-gray-700">Total Emisi NO<sub>2</sub></h2>
-        <p class="tw-text-2xl tw-font-bold tw-text-gray-900 tw-mt-2">120 ppm</p>
+      <div class="dashboard-card card-no2">
+          <div class="card-header">
+              <h2 class="card-title">Total Emisi NO<sub>2</sub></h2>
+              <div class="card-icon">
+                  <i class="bi bi-cloud-haze"></i>
+              </div>
+          </div>
+          <p class="card-value">120 <span class="card-unit">ppm</span></p>
       </div>
-    </div>
+  </div>
 
-    <!-- Batasan Emisi Section -->
-    <div class="tw-mt-8">
-      <h2 class="tw-text-xl tw-font-bold tw-text-gray-800">Informasi Batasan Emisi</h2>
-      <div class="tw-bg-white tw-shadow-md tw-rounded-lg tw-p-6 tw-mt-4">
-        <ul class="tw-space-y-4">
-          <li class="tw-flex tw-justify-between">
-            <span>Batas Emisi CO:</span>
-            <span class="tw-text-gray-700">300 ppm</span>
-          </li>
-          <li class="tw-flex tw-justify-between">
-            <span>Batas Emisi NO<sub>2</sub>:</span>
-            <span class="tw-text-gray-700">100 ppm</span>
-          </li>
-        </ul>
+  <!-- Batasan Emisi Section -->
+  <div class="info-section">
+      <h2 class="section-title">Informasi Batasan Emisi</h2>
+      <div class="info-card">
+          <ul class="emission-list">
+              <li class="emission-item">
+                  <span class="emission-label">Batas Emisi CO:</span>
+                  <span class="emission-value">300 ppm</span>
+              </li>
+              <li class="emission-item">
+                  <span class="emission-label">Batas Emisi NO<sub>2</sub>:</span>
+                  <span class="emission-value">100 ppm</span>
+              </li>
+          </ul>
       </div>
-    </div>
+  </div>
 
-    <!-- Alert Section -->
-   
-    <div class="tw-mt-8">
-      <h2 class="tw-text-xl tw-font-bold tw-text-gray-800">Riwayat Transaksi Penjualan Karbon</h2>
-      <div class="tw-bg-white tw-shadow-md tw-rounded-lg tw-overflow-x-auto tw-mt-4">
-          <table class="tw-min-w-full tw-table-auto tw-border-collapse tw-text-left">
-              <thead class="tw-bg-gray-50">
+  <!-- Alert Section (Optional) -->
+  <div class="alert-section" id="alertSection" style="display: none;">
+      <div class="alert-card">
+          <div class="alert-header">
+              <div class="alert-icon">
+                  <i class="bi bi-exclamation-triangle"></i>
+              </div>
+              <h3 class="alert-title">Peringatan Emisi</h3>
+          </div>
+          <p class="alert-message" id="alertMessage"></p>
+      </div>
+  </div>
+
+  <!-- Transaction History Section -->
+  <div class="transaction-section">
+      <h2 class="section-title">Riwayat Transaksi Penjualan Karbon</h2>
+      <div class="transaction-table-container">
+          <table class="transaction-table">
+              <thead>
                   <tr>
-                      <th class="tw-px-6 tw-py-3 tw-text-gray-700 tw-font-semibold">No</th>
-                      <th class="tw-px-6 tw-py-3 tw-text-gray-700 tw-font-semibold">Tanggal</th>
-                      <th class="tw-px-6 tw-py-3 tw-text-gray-700 tw-font-semibold">Jumlah Karbon (kg)</th>
-                      <th class="tw-px-6 tw-py-3 tw-text-gray-700 tw-font-semibold">Status</th>
-                      <th class="tw-px-6 tw-py-3 tw-text-gray-700 tw-font-semibold">Aksi</th>
+                      <th>No</th>
+                      <th>Tanggal</th>
+                      <th>Jumlah Karbon (kg)</th>
+                      <th>Status</th>
+                      <th>Aksi</th>
                   </tr>
               </thead>
               <tbody>
                   <% myTransaction.forEach((data, index) => { %>
-                      <tr class="tw-border-b tw-bg-white hover:tw-bg-gray-50">
-                          <td class="tw-px-6 tw-py-4"><%= index + 1 %></td>
-                          <td class="tw-px-6 tw-py-4"><%= new Date(data.created_at).toLocaleDateString('id-ID') %></td> <!-- Format tanggal -->
-                          <td class="tw-px-6 tw-py-4"><%= data.amount %></td>
-                          <td class="tw-px-6 tw-py-4"><%= data.status %></td>
-                          <td class="tw-px-6 tw-py-4">
+                      <tr>
+                          <td><%= index + 1 %></td>
+                          <td><%= new Date(data.created_at).toLocaleDateString('id-ID') %></td>
+                          <td><%= data.amount %></td>
+                          <td>
+                              <span class="status-badge <%= data.status === 'pending' ? 'status-pending' : data.status === 'success' ? 'status-success' : '' %>">
+                                  <%= data.status %>
+                              </span>
+                          </td>
+                          <td>
                               <% if (data.status === 'pending') { %>
-                                  <a href="<%= data.link %>" class="tw-bg-blue-500 tw-text-white tw-px-4 tw-py-2 tw-rounded-md hover:tw-bg-blue-600">
+                                  <a href="<%= data.link %>" class="action-button button-primary">
                                       Lanjutkan Pembayaran
                                   </a>
                               <% } else if (data.status === 'success') { %>
-                                  <a class="tw-bg-green-500 tw-text-white tw-px-4 tw-py-2 tw-rounded-md hover:tw-bg-green-600" href="/market/status?id=<%= data.id %>">
-                                      View
+                                  <a href="/market/status?id=<%= data.id %>" class="action-button button-success">
+                                      Lihat Detail
                                   </a>
-                            
-                              <% }  %>
-                                  <!-- Jika status lainnya, bisa menambahkan tindakan sesuai keperluan -->
-     
+                              <% } %>
                           </td>
                       </tr>
                   <% }); %>
@@ -82,13 +111,93 @@
           </table>
       </div>
   </div>
-  
-  
-  </main>
+</main>
 
-  <script>
-    function handleSellCarbon() {
-      alert("Karbon Anda telah dijual ke Shop Public!");
-      // Implementasikan logika backend untuk transaksi penjualan karbon.
-    }
-  </script>
+<script>
+function handleSellCarbon() {
+  const sellButton = event.target;
+  const originalText = sellButton.innerHTML;
+  
+  // Show loading state
+  sellButton.innerHTML = '<i class="bi bi-arrow-repeat spin"></i> Processing...';
+  sellButton.classList.add('loading');
+  
+  // Simulate API call
+  setTimeout(() => {
+      // Show success message
+      showAlert('success', 'Karbon Anda telah berhasil dijual ke Shop Public!');
+      
+      // Reset button
+      sellButton.innerHTML = originalText;
+      sellButton.classList.remove('loading');
+      
+      // You can add actual API call here
+      // fetch('/api/sell-carbon', { method: 'POST' })
+      //   .then(response => response.json())
+      //   .then(data => {
+      //       // Handle response
+      //   });
+  }, 2000);
+}
+
+function showAlert(type, message) {
+  const alertSection = document.getElementById('alertSection');
+  const alertMessage = document.getElementById('alertMessage');
+  
+  alertMessage.textContent = message;
+  
+  if (type === 'success') {
+      alertSection.querySelector('.alert-card').style.background = 'linear-gradient(135deg, #d1fae5, #10b981)';
+      alertSection.querySelector('.alert-icon').innerHTML = '<i class="bi bi-check-circle"></i>';
+      alertSection.querySelector('.alert-title').textContent = 'Berhasil!';
+      alertSection.querySelector('.alert-title').style.color = '#065f46';
+      alertSection.querySelector('.alert-message').style.color = '#065f46';
+  }
+  
+  alertSection.style.display = 'block';
+  
+  // Auto hide after 5 seconds
+  setTimeout(() => {
+      alertSection.style.display = 'none';
+  }, 5000);
+}
+
+// Check emission limits and show warnings
+function checkEmissionLimits() {
+  const coEmission = 350; // Current CO emission
+  const no2Emission = 120; // Current NO2 emission
+  const coLimit = 300;
+  const no2Limit = 100;
+  
+  if (coEmission > coLimit || no2Emission > no2Limit) {
+      let message = '';
+      if (coEmission > coLimit && no2Emission > no2Limit) {
+          message = `Emisi CO (${coEmission} ppm) dan NO2 (${no2Emission} ppm) melebihi batas!`;
+      } else if (coEmission > coLimit) {
+          message = `Emisi CO (${coEmission} ppm) melebihi batas ${coLimit} ppm!`;
+      } else {
+          message = `Emisi NO2 (${no2Emission} ppm) melebihi batas ${no2Limit} ppm!`;
+      }
+      
+      showAlert('warning', message);
+  }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+  checkEmissionLimits();
+});
+
+// Add spin animation for loading
+const style = document.createElement('style');
+style.textContent = `
+  .spin {
+      animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+  }
+`;
+document.head.appendChild(style);
+</script>

@@ -1,39 +1,513 @@
-<div class="tw-max-w-2xl tw-mx-auto tw-bg-white tw-rounded-lg tw-shadow-lg tw-p-6">
-    <h1 class="tw-text-xl tw-font-bold tw-mb-4">Transaction Details</h1>
-
-    <div class="tw-mb-4">
-        <h2 class="tw-text-lg tw-font-semibold">Status</h2>
-        <p>Status Code: <span class="tw-font-medium"><%= datas.status_code %></span></p>
-        <p>Status Message: <span class="tw-font-medium"><%= datas.status_message %></span></p>
-        <p>Transaction Status: <span class="tw-font-medium"><%= datas.transaction_status %></span></p>
-        <p>Fraud Status: <span class="tw-font-medium"><%= datas.fraud_status %></span></p>
+<div class="transaction-container">
+    <!-- Header dengan status utama -->
+    <div class="transaction-header">
+      <div class="header-content">
+        <div class="header-main">
+          <h1 class="page-title">Detail Transaksi</h1>
+          <div class="status-badges">
+            <div class="eco-badge">
+              <i class="fas fa-leaf"></i>
+              CarbonPay
+            </div>
+            <div class="status-badge <%= datas.transaction_status.toLowerCase().replace(' ', '-') %>">
+              <%= datas.transaction_status %>
+            </div>
+          </div>
+        </div>
+        <div class="transaction-id">
+          <p class="id-label">ID Transaksi</p>
+          <p class="id-value"><%= datas.transaction_id %></p>
+        </div>
+      </div>
     </div>
-
-    <div class="tw-mb-4">
-        <h2 class="tw-text-lg tw-font-semibold">Transaction Info</h2>
-        <p>Transaction ID: <span class="tw-font-medium"><%= datas.transaction_id %></span></p>
-        <p>Order ID: <span class="tw-font-medium"><%= datas.order_id %></span></p>
-        <p>Gross Amount: <span class="tw-font-medium"><%= datas.gross_amount %> <%= datas.currency %></span></p>
-        <p>Payment Type: <span class="tw-font-medium"><%= datas.payment_type %></span></p>
+  
+    <div class="transaction-body">
+      <!-- Ringkasan Status Utama -->
+      <div class="status-summary">
+        <div class="status-card">
+          <div class="status-icon transaction">
+            <i class="fas fa-receipt"></i>
+          </div>
+          <div class="status-info">
+            <h3>Status Transaksi</h3>
+            <p class="status-value"><%= datas.transaction_status %></p>
+          </div>
+        </div>
+        
+        <div class="status-card">
+          <div class="status-icon security">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="status-info">
+            <h3>Status Keamanan</h3>
+            <p class="status-value"><%= datas.fraud_status %></p>
+          </div>
+        </div>
+        
+        <div class="status-card">
+          <div class="status-icon amount">
+            <i class="fas fa-coins"></i>
+          </div>
+          <div class="status-info">
+            <h3>Total Pembayaran</h3>
+            <p class="status-value"><%= datas.gross_amount %> <%= datas.currency %></p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Grid Informasi -->
+      <div class="info-grid">
+        <!-- Informasi Transaksi -->
+        <div class="info-card">
+          <div class="card-header">
+            <i class="fas fa-info-circle"></i>
+            <h2>Informasi Transaksi</h2>
+          </div>
+          <div class="card-content">
+            <div class="info-row">
+              <span class="info-label">Order ID</span>
+              <span class="info-value"><%= datas.order_id %></span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Metode Pembayaran</span>
+              <span class="info-value"><%= datas.payment_type %></span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Kode Status</span>
+              <span class="info-value"><%= datas.status_code %></span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Pesan Status</span>
+              <span class="info-value"><%= datas.status_message %></span>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Waktu Transaksi -->
+        <div class="info-card">
+          <div class="card-header">
+            <i class="fas fa-clock"></i>
+            <h2>Waktu Transaksi</h2>
+          </div>
+          <div class="card-content">
+            <div class="info-row">
+              <span class="info-label">Waktu Transaksi</span>
+              <span class="info-value"><%= datas.transaction_time %></span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Waktu Penyelesaian</span>
+              <span class="info-value"><%= datas.settlement_time %></span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Waktu Kedaluwarsa</span>
+              <span class="info-value"><%= datas.expiry_time %></span>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Virtual Account -->
+      <div class="info-card full-width">
+        <div class="card-header">
+          <i class="fas fa-university"></i>
+          <h2>Virtual Account</h2>
+        </div>
+        <div class="card-content">
+          <% datas.va_numbers.forEach(function(va) { %>
+          <div class="va-card">
+            <div class="va-info">
+              <div class="va-bank">
+                <p class="va-label">Bank</p>
+                <p class="va-bank-name"><%= va.bank %></p>
+              </div>
+              <div class="va-number">
+                <p class="va-label">Nomor Virtual Account</p>
+                <p class="va-number-value"><%= va.va_number %></p>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+  
+      <!-- Informasi Merchant -->
+      <div class="info-card">
+        <div class="card-header">
+          <i class="fas fa-store"></i>
+          <h2>Informasi Merchant</h2>
+        </div>
+        <div class="card-content">
+          <div class="info-row">
+            <span class="info-label">Merchant ID</span>
+            <span class="info-value"><%= datas.merchant_id %></span>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Footer Eco -->
+      <div class="eco-footer">
+        <i class="fas fa-leaf"></i>
+        <span>Transaksi ini mendukung program pengurangan emisi karbon</span>
+      </div>
     </div>
-
-    <div class="tw-mb-4">
-        <h2 class="tw-text-lg tw-font-semibold">Times</h2>
-        <p>Transaction Time: <span class="tw-font-medium"><%= datas.transaction_time %></span></p>
-        <p>Settlement Time: <span class="tw-font-medium"><%= datas.settlement_time %></span></p>
-        <p>Expiry Time: <span class="tw-font-medium"><%= datas.expiry_time %></span></p>
-    </div>
-
-    <div class="tw-mb-4">
-        <h2 class="tw-text-lg tw-font-semibold">Merchant Info</h2>
-        <p>Merchant ID: <span class="tw-font-medium"><%= datas.merchant_id %></span></p>
-    </div>
-
-    <div class="tw-mb-4">
-        <h2 class="tw-text-lg tw-font-semibold">Virtual Account</h2>
-        <% datas.va_numbers.forEach(function(va) { %>
-            <p>Bank: <span class="tw-font-medium"><%= va.bank %></span></p>
-            <p>VA Number: <span class="tw-font-medium"><%= va.va_number %></span></p>
-        <% }) %>
-    </div>
-</div>
+  </div>
+  
+  <style>
+  .transaction-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #f8fdf8 0%, #e8f5e8 100%);
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 100, 0, 0.1);
+    overflow: hidden;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+  }
+  
+  .transaction-header {
+    background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+    padding: 40px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .transaction-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  }
+  
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .header-main {
+    flex: 1;
+  }
+  
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+  }
+  
+  .status-badges {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .eco-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+  }
+  
+  .eco-badge i {
+    margin-right: 6px;
+  }
+  
+  .status-badge {
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: capitalize;
+  }
+  
+  .status-badge.settlement,
+  .status-badge.success,
+  .status-badge.capture {
+    background: #4caf50;
+    color: white;
+  }
+  
+  .status-badge.pending {
+    background: #ff9800;
+    color: white;
+  }
+  
+  .status-badge.deny,
+  .status-badge.failure {
+    background: #f44336;
+    color: white;
+  }
+  
+  .transaction-id {
+    text-align: right;
+  }
+  
+  .id-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 5px;
+  }
+  
+  .id-value {
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  .transaction-body {
+    padding: 40px;
+  }
+  
+  .status-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+  
+  .status-card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 100, 0, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(76, 175, 80, 0.1);
+  }
+  
+  .status-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 100, 0, 0.15);
+  }
+  
+  .status-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+  }
+  
+  .status-icon.transaction {
+    background: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+    color: #2e7d32;
+  }
+  
+  .status-icon.security {
+    background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+    color: #ef6c00;
+  }
+  
+  .status-icon.amount {
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    color: #1565c0;
+  }
+  
+  .status-info h3 {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .status-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2e7d32;
+    margin: 0;
+  }
+  
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  
+  .info-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 100, 0, 0.08);
+    overflow: hidden;
+    border: 1px solid rgba(76, 175, 80, 0.1);
+  }
+  
+  .info-card.full-width {
+    grid-column: 1 / -1;
+  }
+  
+  .card-header {
+    background: linear-gradient(135deg, #388e3c, #2e7d32);
+    padding: 24px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .card-header i {
+    font-size: 1.2rem;
+  }
+  
+  .card-header h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .card-content {
+    padding: 24px;
+  }
+  
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .info-row:last-child {
+    border-bottom: none;
+  }
+  
+  .info-label {
+    color: #666;
+    font-weight: 500;
+  }
+  
+  .info-value {
+    font-weight: 600;
+    color: #333;
+    text-align: right;
+  }
+  
+  .va-card {
+    background: linear-gradient(135deg, #f1f8e9, #e8f5e8);
+    border: 1px solid #c8e6c9;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  
+  .va-card:last-child {
+    margin-bottom: 0;
+  }
+  
+  .va-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .va-label {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  
+  .va-bank-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2e7d32;
+    margin: 0;
+  }
+  
+  .va-number-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1b5e20;
+    font-family: 'Monaco', 'Consolas', monospace;
+    margin: 0;
+  }
+  
+  .eco-footer {
+    text-align: center;
+    padding: 24px;
+    color: #666;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .eco-footer i {
+    color: #4caf50;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .header-content {
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .transaction-id {
+      text-align: left;
+    }
+    
+    .info-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .status-summary {
+      grid-template-columns: 1fr;
+    }
+    
+    .va-info {
+      flex-direction: column;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    
+    .page-title {
+      font-size: 2rem;
+    }
+    
+    .transaction-header,
+    .transaction-body {
+      padding: 24px;
+    }
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .status-card,
+  .info-card {
+    animation: fadeIn 0.6s ease-out;
+  }
+  
+  .status-card:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  
+  .status-card:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+  </style>

@@ -1,98 +1,468 @@
-<div class="tw-container tw-mx-auto">
-    <h1 class="tw-text-2xl tw-font-bold tw-text-center tw-mb-8">Form Update Data Kendaraan</h1>
+<style>
+    /* Environmental Theme Colors - Match dengan Bootstrap */
+    :root {
+        --primary-green: #198754;
+        --secondary-green: #146c43;
+        --accent-teal: #0dcaf0;
+        --light-green: #d1e7dd;
+        --dark-green: #0f5132;
+        --earth-brown: #664d03;
+        --sky-blue: #0d6efd;
+        --warning-amber: #ffc107;
+    }
 
-    <form class="tw-bg-white tw-rounded-lg tw-shadow-lg tw-p-6" method="POST" action="/vehicle/adds/<%= vehicle.id %>" enctype="multipart/form-data">
-        <div class="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 tw-gap-6">
+    /* Main Content Area Styling */
+    .main-content {
+        padding: 2rem;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+    }
 
-            <div>
-                <label for="numberRegistration" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Nomor Registrasi</label>
-                <input type="text" id="numberRegistration" name="numberRegistration" 
-                       value="<%= vehicle.number_registration %>" 
-                       class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
+    /* Environmental Card */
+    .eco-card {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(25, 135, 84, 0.2);
+        border-radius: 0.75rem;
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .eco-card:hover {
+        box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.12);
+        transform: translateY(-0.25rem);
+    }
+
+    /* Header Styling */
+    .eco-header {
+        color: var(--dark-green);
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        border-bottom: 3px solid var(--primary-green);
+        padding-bottom: 1rem;
+    }
+
+    /* Form Elements - Match dengan Bootstrap */
+    .eco-input {
+        background: #fff;
+        border: 1px solid #ced4da;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+        width: 100%;
+    }
+
+    .eco-input:focus {
+        border-color: var(--primary-green);
+        box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+        background: #fff;
+    }
+
+    .eco-select {
+        background: #fff;
+        border: 1px solid #ced4da;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+        width: 100%;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.75rem center;
+        background-repeat: no-repeat;
+        background-size: 16px;
+    }
+
+    .eco-select:focus {
+        border-color: var(--primary-green);
+        box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+    }
+
+    .eco-label {
+        font-weight: 600;
+        color: var(--dark-green);
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* Button Styling - Match dengan Bootstrap */
+    .eco-btn {
+        background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+        border: none;
+        border-radius: 0.5rem;
+        padding: 0.875rem 2rem;
+        font-weight: 600;
+        color: white;
+        transition: all 0.3s ease;
+        width: 100%;
+        font-size: 1rem;
+    }
+
+    .eco-btn:hover {
+        background: linear-gradient(135deg, var(--secondary-green), var(--dark-green));
+        transform: translateY(-1px);
+        box-shadow: 0 0.5rem 1rem rgba(25, 135, 84, 0.3);
+    }
+
+    /* Environmental Badges */
+    .eco-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.75rem;
+        background: var(--light-green);
+        color: var(--dark-green);
+        border-radius: 1rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-left: 0.5rem;
+    }
+
+    /* File Input Styling */
+    .eco-file-input {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .eco-file-input input[type="file"] {
+        position: absolute;
+        left: -9999px;
+    }
+
+    .eco-file-label {
+        display: block;
+        padding: 0.75rem 1rem;
+        background: rgba(25, 135, 84, 0.1);
+        border: 2px dashed var(--primary-green);
+        border-radius: 0.5rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: var(--dark-green);
+        font-size: 0.9rem;
+    }
+
+    .eco-file-label:hover {
+        background: rgba(25, 135, 84, 0.2);
+    }
+
+    /* Grid Layout */
+    .eco-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        align-items: start;
+    }
+
+    /* Environmental Message */
+    .eco-message {
+        background: linear-gradient(135deg, var(--light-green), #e8f5e8);
+        border: 1px solid rgba(25, 135, 84, 0.3);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .eco-stats {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 1rem;
+        gap: 1rem;
+    }
+
+    .stat-item {
+        text-align: center;
+        flex: 1;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--primary-green);
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+        color: var(--dark-green);
+        margin-top: 0.25rem;
+    }
+
+    /* Textarea Specific */
+    .eco-textarea {
+        resize: vertical;
+        min-height: 100px;
+        line-height: 1.5;
+    }
+
+    /* Tips Section */
+    .eco-tips {
+        background: linear-gradient(135deg, #f8fff8, #e8f5e8);
+        border: 1px solid rgba(25, 135, 84, 0.2);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .main-content {
+            padding: 1rem;
+        }
+        
+        .eco-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .eco-stats {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .eco-header {
+            font-size: 1.5rem;
+        }
+    }
+
+    /* Focus States */
+    .eco-input:focus-visible,
+    .eco-select:focus-visible,
+    .eco-btn:focus-visible {
+        outline: 2px solid var(--primary-green);
+        outline-offset: 1px;
+    }
+
+    /* Form Group Spacing */
+    .form-group {
+        margin-bottom: 0;
+    }
+
+    /* Full width for textarea and file input */
+    .full-width {
+        grid-column: 1 / -1;
+    }
+</style>
+
+<div class="container-fluid">
+    <!-- Environmental Header Message -->
+    <div class="eco-message">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="eco-header h2 mb-3">
+                    <i class="bi bi-car-front-fill me-2"></i>
+                    Form Update Data Kendaraan Ramah Lingkungan
+                </h1>
+                <p class="text-muted mb-0">
+                    Kendaraan yang terawat dengan baik menghasilkan emisi yang lebih rendah dan berkontribusi pada lingkungan yang lebih sehat
+                </p>
             </div>
-
-            <div>
-                <label for="vehicle" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Kendaraan</label>
-                <input type="text" id="vehicle" name="vehicle" 
-                       value="<%= vehicle.vehicle %>" 
-                       class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
-            </div>
-
-            <div>
-                <label for="typeVehicle" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Tipe Kendaraan</label>
-                <select id="typeVehicle" name="typeVehicle" 
-                        class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
-                    <option value="">Pilih Tipe</option>
-                    <option value="Sedan" <%= vehicle.type_vehicle === 'Sedan' ? 'selected' : '' %>>Sedan</option>
-                    <option value="Hatchback" <%= vehicle.type_vehicle === 'Hatchback' ? 'selected' : '' %>>Hatchback</option>
-                    <option value="SUV" <%= vehicle.type_vehicle === 'SUV' ? 'selected' : '' %>>SUV (Sport Utility Vehicle)</option>
-                    <!-- Tambahkan opsi lainnya -->
-                </select>
-            </div>
-
-            <div>
-                <label for="transmissionType" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Transmisi</label>
-                <select id="transmissionType" name="transmissionType" 
-                        class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
-                    <option value="">Pilih Transmisi</option>
-                    <option value="Manual" <%= vehicle.transmission_type === 'Manual' ? 'selected' : '' %>>Manual Transmission (MT)</option>
-                    <option value="Automatic" <%= vehicle.transmission_type === 'Automatic' ? 'selected' : '' %>>Automatic Transmission (AT)</option>
-                    <!-- Tambahkan opsi lainnya -->
-                </select>
-            </div>
-
-            <div>
-                <label for="lastOilChangeDate" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Tanggal Ganti Oli</label>
-                <input type="date" id="lastOilChangeDate" name="lastOilChangeDate" 
-                       value="<%= last_oil_change_date %>" 
-                       class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
-            </div>
-
-            <div>
-                <label for="fuel" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">BBM</label>
-                <select id="fuel" name="fuel" 
-                        class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
-                    <optgroup label="Bensin">
-                        <option value="Pertalite" <%= vehicle.fuel === 'Pertalite' ? 'selected' : '' %>>Pertalite (RON 90)</option>
-                        <option value="Pertamax" <%= vehicle.fuel === 'Pertamax' ? 'selected' : '' %>>Pertamax (RON 92)</option>
-                    </optgroup>
-                    <optgroup label="Diesel">
-                        <option value="Solar" <%= vehicle.fuel === 'Solar' ? 'selected' : '' %>>Solar/Biosolar</option>
-                    </optgroup>
-                </select>
-            </div>
-
-            <div>
-                <label for="cylinderVolume" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Volume Silinder (cc)</label>
-                <input type="number" id="cylinderVolume" name="cylinderVolume" 
-                       value="<%= vehicle.cylinder_volume %>" 
-                       class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
-            </div>
-
-            <div>
-                <label for="descriptionVehicle" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Deskripsi Kendaraan</label>
-                <textarea id="descriptionVehicle" name="descriptionVehicle" rows="3"
-                          class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500"><%= vehicle.description_vehicle %></textarea>
-            </div>
-
-            <div>
-                <label for="vehiclePhoto" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Foto Kendaraan</label>
-                <input type="file" id="vehiclePhoto" name="vehiclePhoto" accept="image/*"
-                       class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
-                <small class="tw-text-gray-600">Foto saat ini: <%= vehicle.vehicle_photo || 'Belum ada foto' %></small>
-            </div>
-            <div>
-                
-                <label for="serviceDate" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Tanggal Servis</label>
-                <input value="<%= serviceDate  %>"  type="date" id="serviceDate" name="serviceDate"
-                       class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
+            <div class="col-md-4">
+                <div class="eco-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">-30%</div>
+                        <div class="stat-label">Emisi CO₂</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">+25%</div>
+                        <div class="stat-label">Efisiensi</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">+40%</div>
+                        <div class="stat-label">Umur Pakai</div>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
 
-        </div>
+    <!-- Main Form -->
+    <div class="eco-card p-4">
+        <form method="POST" action="/vehicle/adds/<%= vehicle.id %>" enctype="multipart/form-data">
+            <div class="eco-grid">
+                <!-- Nomor Registrasi -->
+                <div class="form-group">
+                    <label for="numberRegistration" class="eco-label">
+                        <i class="bi bi-card-checklist text-success"></i>
+                        Nomor Registrasi
+                        <span class="eco-badge">Wajib</span>
+                    </label>
+                    <input type="text" id="numberRegistration" name="numberRegistration" 
+                           value="<%= vehicle.number_registration %>" 
+                           class="eco-input"
+                           placeholder="Masukkan nomor registrasi kendaraan"
+                           required>
+                </div>
 
-        <div class="tw-mt-6">
-            <button type="submit" class="tw-w-full tw-p-3 tw-bg-blue-600 tw-text-white tw-font-semibold tw-rounded-md hover:tw-bg-blue-700 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-ring-opacity-50">Update Data</button>
-        </div>
-    </form>
+                <!-- Nama Kendaraan -->
+                <div class="form-group">
+                    <label for="vehicle" class="eco-label">
+                        <i class="bi bi-car-front text-success"></i>
+                        Nama Kendaraan
+                        <span class="eco-badge">Wajib</span>
+                    </label>
+                    <input type="text" id="vehicle" name="vehicle" 
+                           value="<%= vehicle.vehicle %>" 
+                           class="eco-input"
+                           placeholder="Contoh: Toyota Avanza, Honda Civic"
+                           required>
+                </div>
+
+                <!-- Tipe Kendaraan -->
+                <div class="form-group">
+                    <label for="typeVehicle" class="eco-label">
+                        <i class="bi bi-gear-fill text-success"></i>
+                        Tipe Kendaraan
+                    </label>
+                    <select id="typeVehicle" name="typeVehicle" class="eco-select">
+                        <option value="">Pilih Tipe Kendaraan</option>
+                        <option value="Sedan" <%= vehicle.type_vehicle === 'Sedan' ? 'selected' : '' %>>Sedan</option>
+                        <option value="Hatchback" <%= vehicle.type_vehicle === 'Hatchback' ? 'selected' : '' %>>Hatchback</option>
+                        <option value="SUV" <%= vehicle.type_vehicle === 'SUV' ? 'selected' : '' %>>SUV</option>
+                        <option value="MPV" <%= vehicle.type_vehicle === 'MPV' ? 'selected' : '' %>>MPV</option>
+                        <option value="Electric Vehicle" <%= vehicle.type_vehicle === 'Electric Vehicle' ? 'selected' : '' %>>Electric Vehicle (EV)</option>
+                        <option value="Hybrid" <%= vehicle.type_vehicle === 'Hybrid' ? 'selected' : '' %>>Hybrid</option>
+                    </select>
+                </div>
+
+                <!-- Tipe Transmisi -->
+                <div class="form-group">
+                    <label for="transmissionType" class="eco-label">
+                        <i class="bi bi-gear-wide text-success"></i>
+                        Tipe Transmisi
+                    </label>
+                    <select id="transmissionType" name="transmissionType" class="eco-select">
+                        <option value="">Pilih Tipe Transmisi</option>
+                        <option value="Manual" <%= vehicle.transmission_type === 'Manual' ? 'selected' : '' %>>Manual (MT)</option>
+                        <option value="Automatic" <%= vehicle.transmission_type === 'Automatic' ? 'selected' : '' %>>Automatic (AT)</option>
+                        <option value="CVT" <%= vehicle.transmission_type === 'CVT' ? 'selected' : '' %>>CVT</option>
+                    </select>
+                </div>
+
+                <!-- Tanggal Ganti Oli -->
+                <div class="form-group">
+                    <label for="lastOilChangeDate" class="eco-label">
+                        <i class="bi bi-droplet-fill text-success"></i>
+                        Tanggal Ganti Oli
+                    </label>
+                    <input type="date" id="lastOilChangeDate" name="lastOilChangeDate" 
+                           value="<%= last_oil_change_date %>" 
+                           class="eco-input">
+                </div>
+
+                <!-- Jenis BBM -->
+                <div class="form-group">
+                    <label for="fuel" class="eco-label">
+                        <i class="bi bi-fuel-pump-fill text-success"></i>
+                        Jenis Bahan Bakar
+                    </label>
+                    <select id="fuel" name="fuel" class="eco-select">
+                        <optgroup label="🟢 Bensin">
+                            <option value="Pertalite" <%= vehicle.fuel === 'Pertalite' ? 'selected' : '' %>>Pertalite (RON 90)</option>
+                            <option value="Pertamax" <%= vehicle.fuel === 'Pertamax' ? 'selected' : '' %>>Pertamax (RON 92)</option>
+                        </optgroup>
+                        <optgroup label="🔵 Diesel">
+                            <option value="Solar" <%= vehicle.fuel === 'Solar' ? 'selected' : '' %>>Solar/Biosolar</option>
+                        </optgroup>
+                        <optgroup label="🌿 Ramah Lingkungan">
+                            <option value="Electric" <%= vehicle.fuel === 'Electric' ? 'selected' : '' %>>Listrik</option>
+                            <option value="Hybrid" <%= vehicle.fuel === 'Hybrid' ? 'selected' : '' %>>Hybrid</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <!-- Volume Silinder -->
+                <div class="form-group">
+                    <label for="cylinderVolume" class="eco-label">
+                        <i class="bi bi-speedometer2 text-success"></i>
+                        Volume Silinder (cc)
+                        <span class="eco-badge" style="background: #fff3cd; color: #856404;">
+                            Emisi
+                        </span>
+                    </label>
+                    <input type="number" id="cylinderVolume" name="cylinderVolume" 
+                           value="<%= vehicle.cylinder_volume %>" 
+                           class="eco-input"
+                           placeholder="1500, 2000, dll"
+                           min="0">
+                </div>
+
+                <!-- Tanggal Servis -->
+                <div class="form-group">
+                    <label for="serviceDate" class="eco-label">
+                        <i class="bi bi-tools text-success"></i>
+                        Tanggal Servis
+                    </label>
+                    <input value="<%= serviceDate %>" type="date" id="serviceDate" name="serviceDate"
+                           class="eco-input">
+                </div>
+
+                <!-- Deskripsi Kendaraan -->
+                <div class="form-group full-width">
+                    <label for="descriptionVehicle" class="eco-label">
+                        <i class="bi bi-card-text text-success"></i>
+                        Deskripsi Kendaraan
+                    </label>
+                    <textarea id="descriptionVehicle" name="descriptionVehicle" rows="4"
+                              class="eco-input eco-textarea"
+                              placeholder="Deskripsikan kondisi kendaraan, perawatan terakhir, dan catatan penting lainnya..."><%= vehicle.description_vehicle %></textarea>
+                </div>
+
+                <!-- Foto Kendaraan -->
+                <div class="form-group full-width">
+                    <label for="vehiclePhoto" class="eco-label">
+                        <i class="bi bi-camera-fill text-success"></i>
+                        Foto Kendaraan
+                    </label>
+                    <div class="eco-file-input">
+                        <input type="file" id="vehiclePhoto" name="vehiclePhoto" accept="image/*">
+                        <label for="vehiclePhoto" class="eco-file-label">
+                            <i class="bi bi-cloud-upload me-2"></i>
+                            Klik untuk Upload Foto Kendaraan
+                        </label>
+                    </div>
+                    <div class="mt-2 small text-muted">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Foto saat ini: <strong><%= vehicle.vehicle_photo || 'Belum ada foto' %></strong>
+                    </div>
+                    <div class="mt-1 small text-muted">
+                        Format yang didukung: JPG, PNG, GIF. Maksimal 5MB.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="mt-4">
+                <button type="submit" class="eco-btn">
+                    <i class="bi bi-cloud-check-fill me-2"></i>
+                    Update Data Kendaraan Ramah Lingkungan
+                </button>
+            </div>
+
+            <!-- Environmental Tips -->
+            <div class="eco-tips">
+                <h5 class="fw-semibold text-success mb-3">
+                    <i class="bi bi-lightbulb-fill me-2"></i>
+                    Tips Kendaraan Ramah Lingkungan:
+                </h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="small text-success mb-3 mb-md-0">
+                            <li class="mb-2">• Servis berkala mengurangi emisi gas buang hingga 30%</li>
+                            <li class="mb-2">• Ganti oli tepat waktu meningkatkan efisiensi bahan bakar</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="small text-success">
+                            <li class="mb-2">• Ban dengan tekanan tepat menghemat 3% konsumsi BBM</li>
+                            <li class="mb-2">• Kendaraan listrik/hybrid menghasilkan 50% lebih sedikit emisi</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>

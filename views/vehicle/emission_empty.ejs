@@ -1,0 +1,303 @@
+<style>
+    /* Empty State Styles */
+    .empty-state-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    }
+
+    .empty-state-card {
+        background: white;
+        border-radius: 24px;
+        padding: 4rem 3rem;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .empty-icon {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, #0ea5e9, #10b981);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 2rem;
+        position: relative;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    .empty-icon::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        background: linear-gradient(135deg, #0ea5e9, #10b981);
+        border-radius: 50%;
+        opacity: 0.2;
+        z-index: -1;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .empty-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #1e293b, #0ea5e9);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem;
+    }
+
+    .empty-subtitle {
+        font-size: 1.125rem;
+        color: #64748b;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin: 3rem 0;
+    }
+
+    .feature-card {
+        background: rgba(14, 165, 233, 0.05);
+        border: 1px solid rgba(14, 165, 233, 0.1);
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(14, 165, 233, 0.1);
+    }
+
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #0ea5e9, #10b981);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+    }
+
+    .feature-title {
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+    }
+
+    .feature-desc {
+        color: #64748b;
+        font-size: 0.875rem;
+        line-height: 1.5;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+    }
+
+    .btn-primary-modern {
+        background: linear-gradient(135deg, #0ea5e9, #10b981);
+        border: none;
+        border-radius: 12px;
+        padding: 14px 32px;
+        font-weight: 600;
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary-modern:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3);
+        color: white;
+    }
+
+    .btn-outline-modern {
+        background: transparent;
+        border: 2px solid #0ea5e9;
+        border-radius: 12px;
+        padding: 12px 30px;
+        font-weight: 600;
+        color: #0ea5e9;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-modern:hover {
+        background: #0ea5e9;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .status-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+    }
+
+    .pulse-dot {
+        width: 8px;
+        height: 8px;
+        background: #ef4444;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.2); opacity: 0.7; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+</style>
+
+<div class="empty-state-container">
+    <div class="empty-state-card">
+        <!-- Status Indicator -->
+        <div class="status-indicator">
+            <div class="pulse-dot"></div>
+            <span>NO DATA AVAILABLE</span>
+        </div>
+
+        <!-- Main Icon -->
+        <div class="empty-icon">
+            <i class="bi bi-graph-up text-white fs-1"></i>
+        </div>
+
+        <!-- Title & Description -->
+        <h1 class="empty-title">No Emission Data Found</h1>
+        <p class="empty-subtitle">
+            We couldn't find any emission data from your IoT monitoring system for this vehicle. 
+            This could be due to several reasons:
+        </p>
+
+        <!-- Features/Reasons Grid -->
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="bi bi-wifi-off text-white"></i>
+                </div>
+                <h3 class="feature-title">IoT Device Offline</h3>
+                <p class="feature-desc">
+                    Your vehicle's IoT sensor might be disconnected or experiencing connectivity issues
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="bi bi-clock-history text-white"></i>
+                </div>
+                <h3 class="feature-title">No Recent Activity</h3>
+                <p class="feature-desc">
+                    The vehicle hasn't been used recently or data collection hasn't started yet
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="bi bi-tools text-white"></i>
+                </div>
+                <h3 class="feature-title">System Setup</h3>
+                <p class="feature-desc">
+                    Emission monitoring system might need configuration or calibration
+                </p>
+            </div>
+        </div>
+
+        <!-- Action Steps -->
+        <div class="bg-light rounded-3 p-4 mb-4">
+            <h4 class="h5 fw-semibold text-dark mb-3">Recommended Actions:</h4>
+            <ul class="list-unstyled mb-0">
+                <li class="d-flex align-items-center mb-2">
+                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                    <span>Verify IoT device connectivity and power supply</span>
+                </li>
+                <li class="d-flex align-items-center mb-2">
+                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                    <span>Check vehicle sensor calibration status</span>
+                </li>
+                <li class="d-flex align-items-center">
+                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                    <span>Ensure the vehicle has been in operation recently</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a href="/dashboard" class="btn btn-primary-modern">
+                <i class="bi bi-speedometer2 me-2"></i>
+                Go to Dashboard
+            </a>
+            <a href="/vehicle" class="btn btn-outline-modern">
+                <i class="bi bi-truck me-2"></i>
+                My Vehicles
+            </a>
+            <button onclick="location.reload()" class="btn btn-outline-modern">
+                <i class="bi bi-arrow-clockwise me-2"></i>
+                Refresh Data
+            </button>
+        </div>
+
+        <!-- Support Contact -->
+        <div class="mt-4 pt-3 border-top">
+            <p class="small text-muted mb-0">
+                Need help? <a href="/support" class="text-primary text-decoration-none">Contact our support team</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add some interactive elements
+        const featureCards = document.querySelectorAll('.feature-card');
+        
+        featureCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Auto-refresh after 30 seconds if user is still on page
+        setTimeout(() => {
+            const refreshBtn = document.querySelector('[onclick="location.reload()"]');
+            if (refreshBtn) {
+                refreshBtn.innerHTML = '<i class="bi bi-arrow-clockwise me-2"></i>Auto Refresh Available';
+                refreshBtn.classList.add('pulse-dot');
+            }
+        }, 30000);
+    });
+</script>

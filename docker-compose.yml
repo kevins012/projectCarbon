@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  carbon-app:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql-db
+    environment:
+      - NODE_ENV=development
+    volumes:
+      # Mount current directory ke container
+      - .:/app
+      - /app/node_modules  # Hindari override node_modules di container
+    command: nodemon app.js  # Gunakan nodemon untuk development
+
+  mysql-db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: projectcarbonfix
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql  # Persistent storage untuk database
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql-db
+
+volumes:
+  mysql_data:

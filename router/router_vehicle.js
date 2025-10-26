@@ -1,7 +1,7 @@
 // routes/contactRoutes.js
 const express = require('express');
 const { check, validationResult } = require('express-validator');
-const { fetchAllData, addData, deleteData } = require('../proxy');
+
 const { verifyToken } = require('../middleware/auth_middleware');
 const { getData } = require('../mysql');
 const { getPw } = require('../bcrypt');
@@ -50,8 +50,17 @@ router.get('/emission/:id', verifyToken, async (req, res) => {
         `;
 
         // Fetch data from the database
-        const emissions = await getData(query, [req.params.id,req.user]); // Ensure req.user.id_user contains the logged-in user's ID
-        
+        const emissions = await getData(query, [req.params.id,req.user]); // Ensure req.user.id_user contains the logged-in user's 
+        if (emissions.length === 0){
+            return res.render('vehicle/emission_empty', {
+                layout: 'layouts/main_layout',
+                title: 'No Emission Data - Vehicle Monitoring',
+                msg: req.flash('msg'),
+                role: req.role
+            });
+        }
+        else{
+            console.log("-----------------",emissions);
         // Return the emissions data as JSON
         res.render('vehicle/emission', {
             layout: 'layouts/main_layout',
@@ -62,6 +71,9 @@ router.get('/emission/:id', verifyToken, async (req, res) => {
             role: req.role
            
         });
+
+        }
+        
     } catch (error) {
         console.error('Error retrieving emission data:', error);
         res.status(500).send('ssss retrieving emission data');

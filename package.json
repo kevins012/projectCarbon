@@ -2,12 +2,15 @@
   "name": "expressjs",
   "version": "1.0.0",
   "description": "To install dependencies:",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "bun run index1.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "s": "nodemon main_mongodB.js",
-    "dev": "npx tailwindcss -i ./src/css/input.css -o  ./root/css/style.css --watch"
+    "start": "nodemon app.js",
+    "dev": "docker-compose up --build",
+    "dev:clean": "docker-compose down && docker-compose up --build",
+    "stop": "docker-compose down",
+    "logs": "docker-compose logs -f carbon-app",
+    "db:logs": "docker-compose logs -f mysql-db",
+    "bash": "docker-compose exec carbon-app sh"
   },
   "keywords": [],
   "author": "",
@@ -47,7 +50,8 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.2.0",
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "nodemon": "^3.1.10"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

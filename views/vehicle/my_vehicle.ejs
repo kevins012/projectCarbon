@@ -1,157 +1,961 @@
-<div class="tw-container tw-mx-auto tw-p-6">
-    <h1 class="tw-text-4xl tw-font-bold tw-text-center tw-mb-10">Daftar Kendaraan</h1>
-
-    <table class="tw-w-full tw-bg-white tw-rounded-lg tw-shadow-lg tw-overflow-hidden">
-        <thead class="tw-bg-gray-200">
-            <tr>
-                <th class="tw-p-4 tw-text-left tw-text-gray-700 tw-font-semibold">Foto</th>
-               <th class="tw-p-4 tw-text-left tw-text-gray-700 tw-font-semibold">Nama Kendaraan</th>
-                <th class="tw-p-4 tw-text-left tw-text-gray-700 tw-font-semibold">Nomor Registrasi</th>
-                <th class="tw-p-4 tw-text-left tw-text-gray-700 tw-font-semibold">Tipe Kendaraan</th>
-                <th class="tw-p-4 tw-text-left tw-text-gray-700 tw-font-semibold">Aksi</th>
-                <th class="tw-p-4 tw-text-left tw-text-gray-700 tw-font-semibold">Detail</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% datas.forEach(data => { 
-                %>
-                <tr class="tw-border-b hover:tw-bg-blue-300 relative tw-transition tw-duration-300 group">
-                    <% if (!data.vehicle_photo ){
-                        data.vehicle_photo='noImg.jpg'
-                    } %>
-                    <td class="tw-p-4">
-                      
-                        <img src="/img/<%= data.vehicle_photo %>" alt="Vehicle Photo" class="tw-w-16 tw-h-16 tw-rounded-full tw-object-cover" onclick="openModal(this.src)">
-                    </td>
-                    <td class="tw-p-4"><%= data.vehicle %></td>
-                    <td class="tw-p-4"><%= data.number_registration %></td>
-                    <td class="tw-p-4"><%= data.type_vehicle %></td>
-                    <td class="tw-p-4">
-                        <div class="tw-flex tw-space-x-2">
-                            <form action="/vehicle/delete-vehicle/<%= data.id %>" method="post">
-                                <input type="hidden" name="owner_id" value="<%= data.id %>">
-                                <button class="tw-bg-red-600 tw-text-white tw-px-2 tw-py-1 tw-rounded-md hover:tw:bg-red-700" title="Delete">
-                                    ❌
-                                </button>
-                            </form>
-                            <a href="/vehicle/update/<%= data.id %>" class="tw-bg-yellow-400 tw-text-white tw-px-2 tw-py-1 tw-rounded-md hover:tw:bg-yellow-500" title="Update">
-                                ✏️
-                            </a>
-                        </div>
-                    </td>
-                    <td class="tw-p-4">
-                        <div class="relative">
-                            <button onclick="openDetailsModal('<%= data.vehicle %>', '<%= data.type_vehicle %>', '<%= data.transmission_type %>', 'abi', '12', 'dug', 'ws', '343344', '12 -10 -2212')" 
-                                class="tw-bg-blue-600 tw-text-white tw-px-2 tw-py-1 tw-rounded-md hover:tw:bg-blue-700">
-                                📋
-                            </button>
-                            <button  class="tw-bg-green-600 tw-text-white tw-px-2 tw-py-1 tw-rounded-md hover:tw:bg-green-700">
-                                <a href="/vehicle/emission/<%= data.id %>">📈</a>
-                            </button>
-
-                            <span class="absolute tw-top-1 tw-left-1/2 tw-transform tw--translate-x-1/2 tw-mt-1 tw-hidden group-hover:tw-block tw-bg-gray-800 tw-text-white tw-text-xs tw-rounded tw-px-1">
-                                Show Details
-                            </span>
-                        </div>
-                    </td>
-                </tr>
-            <% }) %>
-        </tbody>
-    </table>
-
-    <div class=" tw-mt-6">
-        <a href="/vehicle/adds" class="tw-inline-flex tw-items-center tw-bg-green-600 tw-text-white tw-px-4 tw-py-2 tw-rounded-md hover:tw-bg-green-700 tw-transition tw-duration-300">
-            <span class="tw-mr-2">➕</span> Add Vehicle
-        </a>
-    </div>
-    
-    
-    <!-- Modal untuk gambar yang diperbesar -->
-    <div id="imageModal" class="tw-fixed tw-inset-0 tw-bg-black/70 tw-flex tw-items-center tw-justify-center tw-hidden">
-        <div class="tw-relative">
-            <img id="modalImage" class="tw-max-w-full tw-max-h-screen tw-rounded-lg tw-shadow-2xl">
-            <button class="tw-absolute tw-top-2 tw-right-2 tw-text-white tw-bg-gray-800/50 tw-rounded-full tw-p-2" onclick="closeModal()">&times;</button>
+<div class="carbon-vehicle-dashboard">
+    <!-- Header Section -->
+    <div class="dashboard-header">
+        <div class="header-content">
+            <div class="title-section">
+                <div class="title-icon">
+                    🚗
+                </div>
+                <div>
+                    <h1 class="page-title">Daftar Kendaraan</h1>
+                    <p class="page-subtitle">Kelola emisi karbon dari kendaraan Anda</p>
+                </div>
+            </div>
+            <div class="carbon-stats">
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value"><%= datas.length %></span>
+                        <span class="stat-label">Total Kendaraan</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Modal untuk detail kendaraan -->
-    <div id="detailsModal" class="tw-fixed tw-inset-0 tw-bg-black/70 tw-flex tw-items-center tw-justify-center tw-hidden">
-        <div class="tw-bg-white tw-rounded-lg tw-p-6 tw-shadow-lg tw-w-11/12 sm:tw-w-1/2 lg:tw-w-1/3">
-            <h2 class="tw-text-2xl tw-font-bold tw-mb-4">Detail Kendaraan</h2>
-            <div id="detailsContent" class="tw-space-y-2 tw-text-gray-800"></div>
-            <button class="tw-bg-gray-600 tw-text-white tw-px-4 tw-py-2 tw-rounded-md hover:tw:bg-gray-700" onclick="closeDetailsModal()">Tutup</button>
+    <!-- Main Content -->
+    <div class="vehicle-content-section">
+        <div class="vehicle-table-container">
+            <div class="table-header">
+                <div class="table-actions">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Cari kendaraan..." class="search-input">
+                    </div>
+                </div>
+                <a href="/vehicle/adds" class="add-vehicle-btn">
+                    <i class="fas fa-plus-circle"></i>
+                    Tambah Kendaraan Baru
+                </a>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="vehicle-table">
+                    <thead>
+                        <tr>
+                            <th class="image-col">Foto Kendaraan</th>
+                            <th class="name-col">Informasi Kendaraan</th>
+                            <th class="reg-col">Registrasi</th>
+                            <th class="type-col">Tipe & Status</th>
+                            <th class="action-col">Kelola</th>
+                            <th class="emission-col">Data Emisi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% datas.forEach(data => { 
+                            if (!data.vehicle_photo) {
+                                data.vehicle_photo = 'noImg.jpg';
+                            }
+                            // Determine emission status color
+                            let emissionClass = 'emission-neutral';
+                            if (data.emission_status === 'Rendah') emissionClass = 'emission-good';
+                            if (data.emission_status === 'Tinggi') emissionClass = 'emission-bad';
+                        %>
+                            <tr class="vehicle-row">
+                                <td class="vehicle-image-cell">
+                                    <div class="image-container">
+                                        <img 
+                                            src="/img/<%= data.vehicle_photo %>" 
+                                            alt="Vehicle Photo" 
+                                            class="vehicle-image"
+                                            onclick="openImageModal(this.src)"
+                                        >
+                                        <div class="image-hover">
+                                            <i class="fas fa-expand"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="vehicle-info-cell">
+                                    <div class="vehicle-main-info">
+                                        <h3 class="vehicle-name"><%= data.vehicle %></h3>
+                                        <div class="vehicle-meta">
+                                            <span class="fuel-type">
+                                                <i class="fas fa-gas-pump"></i>
+                                                <%= data.fuel %>
+                                            </span>
+                                            <span class="transmission">
+                                                <i class="fas fa-cog"></i>
+                                                <%= data.transmission_type %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="registration-cell">
+                                    <div class="reg-number">
+                                        <i class="fas fa-id-card"></i>
+                                        <%= data.number_registration %>
+                                    </div>
+                                </td>
+                                <td class="type-cell">
+                                    <div class="type-info">
+                                        <span class="vehicle-type"><%= data.type_vehicle %></span>
+                                        <div class="emission-status <%= emissionClass %>">
+                                            <i class="fas fa-cloud"></i>
+                                            <%= data.status_emisi == 1 ? 'Emisi Tinggi' : (data.status_emisi == 0 ? 'Emisi Rendah' : 'Belum diukur') %>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="action-cell">
+                                    <div class="action-group">
+                                        <form action="/vehicle/delete-vehicle/<%= data.id %>" method="post" class="action-form">
+                                            <input type="hidden" name="owner_id" value="<%= data.id %>">
+                                            <button type="submit" class="action-btn delete-btn" onclick="return confirm('Hapus kendaraan ini?')">
+                                                🗑️
+                                                <span class="btn-tooltip">Hapus Kendaraan</span>
+                                            </button>
+                                        </form>
+                                        <a href="/vehicle/update/<%= data.id %>" class="action-btn edit-btn">
+                                            ✏️
+                                            <span class="btn-tooltip">Edit Data</span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td class="emission-cell">
+                                    <div class="emission-actions">
+                                        <button 
+                                            onclick="openDetailsModal(
+                                                '<%= data.vehicle %>', 
+                                                '<%= data.type_vehicle %>', 
+                                                '<%= data.transmission_type %>', 
+                                                '<%= data.last_oil_change_date %>', 
+                                                '<%= data.fuel %>', 
+                                                '<%= data.cylinder_volume %>', 
+                                                '<%= data.description %>', 
+                                                '<%= data.status_emisi %>', 
+                                                '<%= data.updated_at %>'
+                                            )" 
+                                            class="action-btn detail-btn"
+                                        >
+                                            📋
+                                            <span class="btn-tooltip">Detail Lengkap</span>
+                                        </button>
+                                        <a href="/vehicle/emission/<%= data.id %>" class="action-btn emission-btn">
+                                            📊
+                                            <span class="btn-tooltip">Analisis Emisi</span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- Image Modal -->
+<div id="imageModal" class="modal">
+    <div class="modal-content image-modal">
+        <button class="modal-close" onclick="closeImageModal()">
+            <i class="fas fa-times"></i>
+        </button>
+        <img id="modalImage" class="modal-image">
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div id="detailsModal" class="modal">
+    <div class="modal-content details-modal">
+        <button class="modal-close" onclick="closeDetailsModal()">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="modal-header">
+            <div class="modal-icon">
+                <i class="fas fa-car"></i>
+            </div>
+            <h2>Detail Kendaraan</h2>
+        </div>
+        <div class="modal-body">
+            <table class="carbon-details-table">
+                <tbody id="detailsContent"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Carbon Theme Variables */
+:root {
+    --primary-green: #2e7d32;
+    --primary-dark: #1b5e20;
+    --primary-light: #4caf50;
+    --secondary-blue: #2196f3;
+    --accent-orange: #ff9800;
+    --danger-red: #f44336;
+    --warning-amber: #ffc107;
+    --success-teal: #009688;
+    --text-dark: #1a237e;
+    --text-light: #546e7a;
+    --bg-light: #f8fdf8;
+    --bg-white: #ffffff;
+    --border-light: #e0f2e0;
+    --shadow-sm: 0 2px 8px rgba(46, 125, 50, 0.1);
+    --shadow-md: 0 4px 16px rgba(46, 125, 50, 0.15);
+    --shadow-lg: 0 8px 32px rgba(46, 125, 50, 0.2);
+    --gradient-primary: linear-gradient(135deg, var(--primary-green), var(--primary-dark));
+    --gradient-emission: linear-gradient(135deg, #4caf50, #009688);
+}
+
+/* Base Styles */
+.carbon-vehicle-dashboard {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8fdf8 0%, #e8f5e8 100%);
+    padding: 2rem;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Header Styles */
+.dashboard-header {
+    margin-bottom: 2rem;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-white);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-light);
+}
+
+.title-section {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.title-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--gradient-primary);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin: 0;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.page-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin: 0.5rem 0 0 0;
+    font-weight: 500;
+}
+
+/* Carbon Stats */
+.carbon-stats {
+    display: flex;
+    gap: 2rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: var(--gradient-emission);
+    border-radius: 15px;
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+.stat-icon {
+    font-size: 1.5rem;
+}
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Table Container */
+.vehicle-content-section {
+    background: var(--bg-white);
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-light);
+    overflow: hidden;
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, #f1f8e9, #e8f5e8);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-box i {
+    position: absolute;
+    left: 1rem;
+    color: var(--text-light);
+}
+
+.search-input {
+    padding: 0.75rem 1rem 0.75rem 3rem;
+    border: 2px solid var(--border-light);
+    border-radius: 12px;
+    font-size: 1rem;
+    background: var(--bg-white);
+    transition: all 0.3s ease;
+    width: 300px;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+.add-vehicle-btn {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.add-vehicle-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    color: white;
+}
+
+/* Table Styles */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.vehicle-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-white);
+}
+
+.vehicle-table thead {
+    background: var(--gradient-primary);
+}
+
+.vehicle-table th {
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid var(--primary-dark);
+}
+
+.vehicle-table td {
+    padding: 1.5rem 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: middle;
+}
+
+.vehicle-row {
+    transition: all 0.3s ease;
+}
+
+.vehicle-row:hover {
+    background: linear-gradient(90deg, rgba(46, 125, 50, 0.05), transparent);
+    transform: translateX(4px);
+}
+
+/* Image Cell */
+.vehicle-image-cell {
+    width: 120px;
+}
+
+.image-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 3px solid var(--border-light);
+    transition: all 0.3s ease;
+}
+
+.image-container:hover {
+    border-color: var(--primary-green);
+    transform: scale(1.05);
+}
+
+.vehicle-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(46, 125, 50, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-container:hover .image-hover {
+    opacity: 1;
+}
+
+/* Vehicle Info Cell */
+.vehicle-info-cell {
+    min-width: 200px;
+}
+
+.vehicle-main-info h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0 0 0.5rem 0;
+}
+
+.vehicle-meta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.fuel-type, .transmission {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    background: var(--bg-light);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+/* Registration Cell */
+.registration-cell {
+    min-width: 150px;
+}
+
+.reg-number {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    border-radius: 8px;
+    font-weight: 600;
+    color: var(--secondary-blue);
+    border-left: 4px solid var(--secondary-blue);
+}
+
+/* Type Cell */
+.type-cell {
+    min-width: 150px;
+}
+
+.type-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.vehicle-type {
+    padding: 0.5rem 1rem;
+    background: var(--bg-light);
+    border-radius: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+    text-align: center;
+}
+
+.emission-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+    justify-content: center;
+}
+
+.emission-good {
+    background: linear-gradient(135deg, #c8e6c9, #a5d6a7);
+    color: var(--primary-dark);
+}
+
+.emission-bad {
+    background: linear-gradient(135deg, #ffcdd2, #ef9a9a);
+    color: #c62828;
+}
+
+.emission-neutral {
+    background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+    color: #ef6c00;
+}
+
+/* Action Cells */
+.action-cell, .emission-cell {
+    min-width: 180px;
+}
+
+.action-group, .emission-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-form {
+    display: inline;
+}
+
+.action-btn {
+    position: relative;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+    width: 44px;
+    height: 44px;
+}
+
+.action-btn:hover .btn-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.btn-tooltip {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text-dark);
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.btn-tooltip::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-bottom-color: var(--text-dark);
+}
+
+.delete-btn {
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+}
+
+.edit-btn {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+}
+
+.detail-btn {
+    background: linear-gradient(135deg, #2196f3, #1976d2);
+}
+
+.emission-btn {
+    background: linear-gradient(135deg, #009688, #00796b);
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: var(--bg-white);
+    border-radius: 20px;
+    position: relative;
+    transform: scale(0.9);
+    transition: all 0.3s ease;
+}
+
+.modal.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--danger-red);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.modal-close:hover {
+    transform: rotate(90deg);
+    background: #c62828;
+}
+
+/* Image Modal */
+.image-modal {
+    max-width: 90vw;
+    max-height: 90vh;
+    padding: 2rem;
+}
+
+.modal-image {
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+}
+
+/* Details Modal */
+.details-modal {
+    max-width: 600px;
+    width: 90vw;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem 2rem 1rem;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.modal-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--gradient-primary);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.modal-header h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin: 0;
+}
+
+.modal-body {
+    padding: 1rem 2rem 2rem;
+}
+
+.carbon-details-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.carbon-details-table tr {
+    border-bottom: 1px solid var(--border-light);
+    transition: background-color 0.3s ease;
+}
+
+.carbon-details-table tr:hover {
+    background: var(--bg-light);
+}
+
+.carbon-details-table td {
+    padding: 1rem 0.5rem;
+    vertical-align: top;
+}
+
+.carbon-details-table td:first-child {
+    font-weight: 600;
+    color: var(--text-dark);
+    width: 40%;
+    padding-left: 0;
+}
+
+.carbon-details-table td:last-child {
+    color: var(--text-light);
+    padding-right: 0;
+}
+
+.carbon-details-table tr:last-child {
+    border-bottom: none;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .vehicle-table {
+        min-width: 1000px;
+    }
+}
+
+@media (max-width: 768px) {
+    .carbon-vehicle-dashboard {
+        padding: 1rem;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+    }
+    
+    .title-section {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .table-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    .search-input {
+        width: 100%;
+    }
+    
+    .carbon-stats {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-title {
+        font-size: 2rem;
+    }
+    
+    .title-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+    
+    .action-group, .emission-actions {
+        flex-direction: column;
+    }
+    
+    .modal-content {
+        margin: 1rem;
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.vehicle-row {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.vehicle-row:nth-child(2) { animation-delay: 0.1s; }
+.vehicle-row:nth-child(3) { animation-delay: 0.2s; }
+.vehicle-row:nth-child(4) { animation-delay: 0.3s; }
+.vehicle-row:nth-child(5) { animation-delay: 0.4s; }
+</style>
 
 <script>
-    function openModal(imageSrc) {
-        const modal = document.getElementById('imageModal');
-        const modalImage = document.getElementById('modalImage');
-        modalImage.src = imageSrc;
-        modal.classList.remove('tw-hidden');
+// Modal functions
+function openImageModal(imageSrc) {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    modalImage.src = imageSrc;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+function openDetailsModal(vehicle, typeVehicle, transmission, oilChangeDate, fuel, cylinderVolume, description, emissionStatus, lastUpdated) {
+    const detailsContent = document.getElementById('detailsContent');
+    detailsContent.innerHTML = `
+        <tr>
+            <td>Nama Kendaraan</td>
+            <td>${vehicle}</td>
+        </tr>
+        <tr>
+            <td>Tipe Kendaraan</td>
+            <td>${typeVehicle}</td>
+        </tr>
+        <tr>
+            <td>Transmisi</td>
+            <td>${transmission}</td>
+        </tr>
+        <tr>
+            <td>Tanggal Ganti Oli</td>
+            <td>${oilChangeDate}</td>
+        </tr>
+        <tr>
+            <td>BBM</td>
+            <td>${fuel}</td>
+        </tr>
+        <tr>
+            <td>Volume Silinder</td>
+            <td>${cylinderVolume}</td>
+        </tr>
+        <tr>
+            <td>Deskripsi</td>
+            <td>${description}</td>
+        </tr>
+        <tr>
+            <td>Status Emisi</td>
+            <td>${emissionStatus}</td>
+        </tr>
+        <tr>
+            <td>Terakhir Diperbarui</td>
+            <td>${lastUpdated}</td>
+        </tr>
+    `;
+    
+    const detailsModal = document.getElementById('detailsModal');
+    detailsModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDetailsModal() {
+    const detailsModal = document.getElementById('detailsModal');
+    detailsModal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal')) {
+        closeImageModal();
+        closeDetailsModal();
     }
+});
 
-    function closeModal() {
-        const modal = document.getElementById('imageModal');
-        modal.classList.add('tw-hidden');
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeImageModal();
+        closeDetailsModal();
     }
+});
 
-    function openDetailsModal(vehicle, typeVehicle, transmission, oilChangeDate, fuel, cylinderVolume, description, emissionStatus, lastUpdated) {
-        const detailsContent = document.getElementById('detailsContent');
-        detailsContent.innerHTML = `
-            <div class="tw-mt-4 tw-overflow-hidden tw-mb-4">
-    <table class="tw-w-full tw-text-left tw-border-collapse tw-bg-gray-50 tw-rounded-lg tw-shadow">
-        <tbody>
-            <tr class="tw-border-b">
-                <td class="tw-py-2 tw-pr-4 tw-font-semibold tw-text-gray-700">Nama Kendaraan</td>
-                <td class="tw-py-2 tw-text-gray-800">:${vehicle}</td>
-            </tr>
-            <tr class="tw-border-b">
-                <td class="tw-py-2 tw-pr-4 tw-font-semibold tw-text-gray-700">Tipe Kendaraan</td>
-                <td class="tw-py-2 tw-text-gray-800">:${typeVehicle}</td>
-            </tr>
-            <tr class="tw-border-b">
-                <td class="tw-py-2 tw-pr-4 tw-font-semibold tw-text-gray-700">Transmisi</td>
-                <td class="tw-py-2 tw-text-gray-800">:${transmission}</td>
-            </tr>
-            <tr class="tw-border-b">
-                <td class="tw-py-2 tw-pr-4 tw-font-semibold tw-text-gray-700">Tanggal Ganti Oli</td>
-                <td class="tw-py-2 tw-text-gray-800">:${oilChangeDate}</td>
-            </tr>
-            <tr class="tw-border-b">
-                <td class="tw-py-2 tw-pr-4 tw-font-semibold tw-text-gray-700">BBM</td>
-                <td class="tw-py-2 tw-text-gray-800">:${fuel}</td>
-            </tr>
-            <tr class="tw-border-b">
-                <td class="tw-py-2 tw-pr-4 tw-font-semibold tw-text-gray-700">Volume Silinder</td>
-                <td class="tw-py-2 tw-text-gray-800">:${cylinderVolume}</td>
-            </tr>
-            <tr class="tw-border-b">
-                <td class="tw-py-2 tw-pr-4 tw-font-semibold tw-text-gray-700">Deskripsi</td>
-                <td class="tw-py-2 tw-text-gray-800">:${description}</td>
-            </tr>
-            <tr class="tw-border-b">
-                <td class="tw-py-2 tw-pr-4 tw-font-semibold tw-text-gray-700">Status Emisi</td>
-                <td class="tw-py-2 tw-text-gray-800">:${emissionStatus}</td>
-            </tr>
-            <tr>
-                <td class="tw-py-2 tw-pr-4 tw-font-semibold tw-text-gray-700">Terakhir Diperbarui</td>
-                <td class="tw-py-2 tw-text-gray-800">:${lastUpdated}</td>
-            </tr>
-          
-        </tbody>
-    </table>
-</div>
-
-
-        `;
-        const detailsModal = document.getElementById('detailsModal');
-        detailsModal.classList.remove('tw-hidden');
-    }
-
-    function closeDetailsModal() {
-        const detailsModal = document.getElementById('detailsModal');
-        detailsModal.classList.add('tw-hidden');
-    }
+// Search functionality
+document.querySelector('.search-input').addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    const rows = document.querySelectorAll('.vehicle-row');
+    
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        if (text.includes(searchTerm)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
 </script>

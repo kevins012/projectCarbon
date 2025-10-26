@@ -3,7 +3,7 @@
 // routes/contactRoutes.js
 const express = require('express');
 const { check, validationResult } = require('express-validator');
-const { fetchAllData, addData, deleteData } = require('../proxy');
+
 const { verifyToken } = require('../middleware/auth_middleware');
 const { transaction,getStatusTransaction } = require('../middleware/transaksi');
 const { getData } = require('../mysql');
@@ -74,19 +74,24 @@ router.get('/',verifyToken,async(req,res)=>{
                 FROM profilseller ;` 
 
     try {
-    
+
 
         const datas = await getData(query);
   
         const myData = datas.filter(user => user.id_user === req.user);
-        
+        if (myData.length ===0){
+
+        }
+        console.log(datas);
+        console.log("---------------------------------------------");
+        console.log(myData);
         res.render('users/market', {
             layout: 'layouts/main_layout',
             title: 'Vehicle Page',
             datas,
             role:req.role,
             myuser:req.user,
-            myData:myData[0]
+            // myData:myData[0]
            
         });
     } catch (error) {
@@ -133,9 +138,12 @@ router.post('/buy', verifyToken, async (req, res) => {
             WHERE sellerID = ? AND buyerID = ? AND status = 'pending'
     );
     `;
-    
+    const query2 =`SELECT 
+         * FROM user WHERE id_user = ?;
+    `
+    const mydatas = await getData(query2,[req.user])
     // Proses nama untuk mendapatkan firstName dan lastName
-    const name = myName.split(' ');
+    const name = mydatas[0].Nama.split(' ');
     const firstName = name[0];
     const lastName = name[name.length - 1];
 
@@ -425,30 +433,62 @@ router.get('/',  async (req, res) => {
     
     
 })
-router.get('/sell',  async (req, res) => {
-    const sell_co = 200 ;
-
+router.post('/sell', verifyToken, async (req, res) => {
+    console.log(req.body);
+    const { id_vehicle, co } = req.body;
     
-    const datas = await getData(`SELECT v.id AS vehicle_id, v.vehicle, SUM(e.CO) AS total_co FROM owner_vehicle v JOIN emission e ON v.id = e.id_vehicle   WHERE v.id = '846e496c-9c2c-4f9f-97ef-a6dc5401a6f6'   GROUP BY v.id, v.vehicle`, [req.user]);
-    const query = `
-        UPDATE capquota cq
-        SET cq.currentQuota = cq.currentQuota - ?,
-        SET cq.initalQuota = cq.initialQuota +?
-        WHERE cq.vehicleID = ?;
-    `;
-    const query2 = `INSERT payment(),`
-    await getData(query, [`6190eefa-b7a4-476c-befa-8d8297ba38a3` 	]);
-    console.log(`Initial quota updated for vehicleID: `);
     try {
-        // await getData('INSERT capquota (`id`,`vehicleID`, `initialQuota`,`currentQuota`,`created_at`) VALUES (?,?,?,?,CURRENT_TIMESTAMP() )',[uuidv4(),datas[0].vehicle_id,0,datas[0].total_co]);
-        res.send(datas[0].vehicle_id);
-    }catch(e){
-        res.send('e')
-    }
-    
-    
-})
+        // 1. Cek currentQuota terlebih dahulu
+        const currentData = await getData(
+            `SELECT currentQuota FROM capquota WHERE vehicleID = ?`, 
+            [id_vehicle]
+        );
 
+        // 2. Validasi apakah data ditemukan
+        if (!currentData || currentData.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Data kendaraan tidak ditemukan'
+            });
+        }
+
+        const currentQuota = currentData[0].currentQuota;
+
+        // 3. Pastikan currentQuota cukup untuk dijual
+        if (currentQuota < co) {
+            return res.status(400).json({
+                success: false,
+                message: `Kuota tidak mencukupi. Current: ${currentQuota}, Request: ${co}`
+            });
+        }
+
+        // 4. Lakukan update jika kuota mencukupi
+        await getData(
+            `UPDATE capquota SET currentQuota = currentQuota - ? WHERE vehicleID = ?`,
+            [co, id_vehicle]
+        );
+
+        // 5. Set flash message
+        req.flash('msg', {
+            type: 'success',
+            message: `Berhasil menjual ${co} kuota karbon! Sisa kuota: ${currentQuota - co}`
+        });
+
+        // 6. Redirect ke halaman emission dengan id vehicle
+        res.redirect(`/vehicle/emission/${id_vehicle}`);
+
+    } catch (error) {
+        console.error('Error selling carbon quota:', error);
+        
+        // Set flash message error
+        req.flash('msg', {
+            type: 'error', 
+            message: 'Terjadi kesalahan server saat menjual kuota'
+        });
+        
+        res.redirect(`/vehicle/emission/${id_vehicle}`);
+    }
+});
 
 module.exports = router;
 

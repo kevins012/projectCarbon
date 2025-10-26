@@ -1,118 +1,158 @@
+<div class="form-container">
+    <h1 class="form-title">Form Pengisian Data Kendaraan</h1>
 
-
-
-<div class="tw-container tw-mx-auto">
-    <h1 class="tw-text-2xl tw-font-bold tw-text-center tw-mb-8">Form Pengisian Data Kendaraan</h1>
-
-    <form class="tw-bg-white tw-rounded-lg tw-shadow-lg tw-p-6" method="POST" action="/vehicle/adds" enctype="multipart/form-data" >
-        <div class="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 tw-gap-6">
-            
-           
-
-            <div>
-                <label for="numberRegistration" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Nomor Registrasi</label>
+    <form class="form-card" method="POST" action="/vehicle/adds" enctype="multipart/form-data">
+        <div class="form-grid">
+            <!-- Nomor Registrasi -->
+            <div class="form-group">
                 <input type="text" id="numberRegistration" name="numberRegistration" 
-                       class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
+                       class="form-input" placeholder=" " required>
+                <label for="numberRegistration" class="form-label">Nomor Registrasi</label>
             </div>
 
-            <div>
-                <label for="vehicle" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Kendaraan</label>
+            <!-- Nama Kendaraan -->
+            <div class="form-group">
                 <input type="text" id="vehicle" name="vehicle" 
-                       class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
+                       class="form-input" placeholder=" " required>
+                <label for="vehicle" class="form-label">Nama Kendaraan</label>
             </div>
 
-            <div>
-                <label for="typeVehicle" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Tipe Kendaraan</label>
-                <select id="typeVehicle" name="typeVehicle" 
-                        class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
-                    <option value="">Pilih Tipe</option>
+            <!-- Tipe Kendaraan -->
+            <div class="form-group">
+                <select id="typeVehicle" name="typeVehicle" class="form-input form-select" required>
+                    <option value="" disabled selected></option>
                     <option value="Sedan">Sedan</option>
                     <option value="Hatchback">Hatchback</option>
-                    <option value="SUV">SUV (Sport Utility Vehicle)</option>
-                    <option value="MPV">MPV (Multi-Purpose Vehicle)</option>
-                    <option value="Crossover">Crossover</option>
+                    <option value="SUV">SUV</option>
+                    <option value="MPV">MPV</option>
                     <option value="Pick-up">Pick-up</option>
-                    <option value="Truck">Truck</option>
-                    <option value="Van">Van</option>
-                    <option value="Coupe">Coupe</option>
-                    <option value="Convertible">Convertible</option>
-                    <option value="Station Wagon">Station Wagon</option>
-                    <option value="Minibus">Minibus</option>
-                    <option value="Bus">Bus</option>
-                    <option value="Motorcycle">Motorcycle/Motorbike</option>
-                    <option value="Electric Vehicle">Electric Vehicle (EV)</option>
+                    <option value="Motorcycle">Motorcycle</option>
+                    <option value="Electric Vehicle">Electric Vehicle</option>
                 </select>
+                <label for="typeVehicle" class="form-label">Tipe Kendaraan</label>
             </div>
 
-            <div>
-                <label for="transmissionType" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Transmisi</label>
-                <select id="transmissionType" name="transmissionType" 
-                        class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
-                    <option value="">Pilih Transmisi</option>
-                    <option value="Manual">Manual Transmission (MT)</option>
-                    <option value="Automatic">Automatic Transmission (AT)</option>
-                    <option value="CVT">Continuously Variable Transmission (CVT)</option>
-                    <option value="Semi-Automatic">Semi-Automatic Transmission (AMT)</option>
-                    <option value="DCT">Dual-Clutch Transmission (DCT)</option>
-                    <option value="Tiptronic">Tiptronic/Manumatic</option>
-                    <option value="AMT">Automated Manual Transmission (AMT)</option>
+            <!-- Transmisi -->
+            <div class="form-group">
+                <select id="transmissionType" name="transmissionType" class="form-input form-select" required>
+                    <option value="" disabled selected></option>
+                    <option value="Manual">Manual</option>
+                    <option value="Automatic">Automatic</option>
+                    <option value="CVT">CVT</option>
+                    <option value="DCT">DCT</option>
                 </select>
+                <label for="transmissionType" class="form-label">Tipe Transmisi</label>
             </div>
 
-            <div>
-                <label for="lastOilChangeDate" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Tanggal Ganti Oli</label>
-                <input type="date" id="lastOilChangeDate" name="lastOilChangeDate" required
-                       class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
+            <!-- Tanggal Ganti Oli -->
+            <div class="form-group">
+                <input type="date" id="lastOilChangeDate" name="lastOilChangeDate" 
+                       class="form-input" placeholder=" " required>
+                <label for="lastOilChangeDate" class="form-label">Tanggal Ganti Oli</label>
             </div>
 
-            <div>
-                <label for="fuel" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">BBM</label>
-                <select id="fuel" name="fuel" required
-                        class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
-                        <optgroup label="Bensin">
-                            <option value="Pertalite">Pertalite (RON 90)</option>
-                            <option value="Pertamax">Pertamax (RON 92)</option>
-                            <option value="Pertamax Turbo">Pertamax Turbo (RON 98)</option>
-                        </optgroup>
-                        <optgroup label="Diesel">
-                            <option value="Solar">Solar/Biosolar</option>
-                            <option value="Dexlite">Dexlite</option>
-                            <option value="Pertamina Dex">Pertamina Dex</option>
-                        </optgroup>
+            <!-- BBM -->
+            <div class="form-group">
+                <select id="fuel" name="fuel" class="form-input form-select" required>
+                    <option value="" disabled selected></option>
+                    <optgroup label="Bensin">
+                        <option value="Pertalite">Pertalite</option>
+                        <option value="Pertamax">Pertamax</option>
+                        <option value="Pertamax Turbo">Pertamax Turbo</option>
+                    </optgroup>
+                    <optgroup label="Diesel">
+                        <option value="Solar">Solar</option>
+                        <option value="Pertamina Dex">Pertamina Dex</option>
+                    </optgroup>
                 </select>
+                <label for="fuel" class="form-label">Jenis BBM</label>
             </div>
 
-            <div>
-                <label for="cylinderVolume" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Volume Silinder (cc)</label>
-                <input type="number" id="cylinderVolume" name="cylinderVolume" required
-                       class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
+            <!-- Volume Silinder -->
+            <div class="form-group">
+                <input type="number" id="cylinderVolume" name="cylinderVolume" 
+                       class="form-input" placeholder=" " required>
+                <label for="cylinderVolume" class="form-label">Volume Silinder (cc)</label>
             </div>
 
-            <div>
-                <label for="descriptionVehicle" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Deskripsi Kendaraan</label>
-                <textarea id="descriptionVehicle" name="descriptionVehicle" rows="3" required
-                          class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500"></textarea>
+            <!-- Deskripsi -->
+            <div class="form-group" style="grid-column: 1 / -1;">
+                <textarea id="descriptionVehicle" name="descriptionVehicle" rows="3"
+                          class="form-input form-textarea" placeholder=" " required></textarea>
+                <label for="descriptionVehicle" class="form-label">Deskripsi Kendaraan</label>
             </div>
 
-            <div>
-                <label for="vehiclePhoto" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Foto Kendaraan</label>
-                <input type="file" id="vehiclePhoto" name="vehiclePhoto" accept="image/*" required
-                       class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
+            <!-- Foto Kendaraan -->
+            <div class="form-group" style="grid-column: 1 / -1;">
+                <div class="file-input-container" id="fileContainer">
+                    <input type="file" id="vehiclePhoto" name="vehiclePhoto" 
+                           accept="image/*" class="file-input" required>
+                    <label for="vehiclePhoto" class="file-label">
+                        <span class="file-icon">📷</span>
+                        <span>Klik untuk upload foto kendaraan</span>
+                        <small>atau drag & drop file di sini</small>
+                    </label>
+                </div>
             </div>
 
-            <div>
-                <label for="serviceHistory" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Riwayat Servis</label>
-                <input type="text" id="serviceHistory" name="serviceHistory"
-                       class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
-                <label for="serviceDate" class="tw-block tw-text-sm tw-font-medium tw-text-gray-700">Tanggal Servis</label>
-                <input type="date" id="serviceDate" name="serviceDate"
-                       class="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-shadow-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500">
+            <!-- Riwayat Servis -->
+            <div class="form-group">
+                <input type="text" id="serviceHistory" name="serviceHistory" 
+                       class="form-input" placeholder=" ">
+                <label for="serviceHistory" class="form-label">Riwayat Servis</label>
+            </div>
+
+            <!-- Tanggal Servis -->
+            <div class="form-group">
+                <input type="date" id="serviceDate" name="serviceDate" 
+                       class="form-input" placeholder=" ">
+                <label for="serviceDate" class="form-label">Tanggal Servis</label>
             </div>
         </div>
 
-        <div class="tw-mt-6">
-            <button type="submit" class="tw-w-full tw-p-3 tw-bg-blue-600 tw-text-white tw-font-semibold tw-rounded-md hover:tw-bg-blue-700 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-ring-opacity-50">Simpan Data</button>
+        <!-- Submit Button -->
+        <div class="form-group" style="grid-column: 1 / -1; margin-top: 2rem;">
+            <button type="submit" class="submit-btn">
+                <span>🚀 Simpan Data Kendaraan</span>
+            </button>
         </div>
     </form>
-   
 </div>
+
+<script>
+// File upload drag & drop
+const fileContainer = document.getElementById('fileContainer');
+const fileInput = document.getElementById('vehiclePhoto');
+
+fileContainer.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    fileContainer.classList.add('dragover');
+});
+
+fileContainer.addEventListener('dragleave', () => {
+    fileContainer.classList.remove('dragover');
+});
+
+fileContainer.addEventListener('drop', (e) => {
+    e.preventDefault();
+    fileContainer.classList.remove('dragover');
+    fileInput.files = e.dataTransfer.files;
+    
+    // Update label text
+    const fileName = e.dataTransfer.files[0]?.name || 'File dipilih';
+    fileContainer.querySelector('span:nth-child(2)').textContent = fileName;
+});
+
+fileInput.addEventListener('change', (e) => {
+    const fileName = e.target.files[0]?.name || 'Klik untuk upload foto kendaraan';
+    fileContainer.querySelector('span:nth-child(2)').textContent = fileName;
+});
+
+// Form submission animation
+const form = document.querySelector('form');
+form.addEventListener('submit', (e) => {
+    const submitBtn = form.querySelector('.submit-btn');
+    submitBtn.innerHTML = '<span>⏳ Menyimpan...</span>';
+    submitBtn.classList.add('form-loading');
+});
+</script>

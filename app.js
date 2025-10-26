@@ -1,4 +1,4 @@
-
+//Kevinpay@23
 const { verifyToken } = require('./middleware/auth_middleware');
 
 const { v4: uuidv4 } = require('uuid'); 
@@ -19,7 +19,7 @@ dotenv.config();
 const {getStatusTransaction} = require('./middleware/transaksi');
 const authRoutes = require('./router/auth_router');
 const { getData } = require('./mysql');
-const contactRoutes = require('./router/router');
+// const contactRoutes = require('./router/router');
 const vehicleRoutes = require('./router/router_vehicle')
 const analysisRoutes = require('./router/router_analysis')
 const usersRoutes = require('./router/users')
@@ -31,7 +31,7 @@ const morgan = require('morgan');
 
 
 const app = express();
-const port = 4000;
+const port = 3000;
 app.use(bodyParser.json())
 app.use(morgan('tiny'));
 
@@ -91,7 +91,7 @@ const mydata = ()=>{
             notes: "Thank you for your purchase. Please follow the instructions to pay."
         },
         callbacks: {
-            finish: "http://localhost:3000"
+            finish: "http://localhost:4000"
         },
         enabled_payments: ["credit_card", "bca_va", "indomaret"],
         item_details: [
@@ -410,7 +410,7 @@ app.get('/history', async (req, res) => {
 
 // Routes
 app.use('/', authRoutes);
-app.use('/contact', contactRoutes);
+// app.use('/contact', contactRoutes);
 app.use('/vehicle',vehicleRoutes);
 app.use('/analysis',analysisRoutes);
 app.use('/market',products);
@@ -422,7 +422,7 @@ app.use((req, res) => {
 });
 
 app.listen(3000, () => {
-    console.log(`Server listening on port ${port}`);
+    console.log(`Servers listening on port ${3000}`);
 });
 
 
